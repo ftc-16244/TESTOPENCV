@@ -33,7 +33,7 @@ public class FF_TrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 30.0/25.4; // 60mm REV omni tracking Wheel
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 15.7; // in; distance between the left and right wheels
+    public static double LATERAL_DISTANCE = 9.843; // in; distance between the left and right wheels
     public static double FORWARD_OFFSET = -7.45; // in; offset of the lateral wheel
 
     public static double X_MULTIPLIER = 1.016; // Multiplier in the X direction //added per recomendation in docs
