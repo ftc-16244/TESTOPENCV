@@ -20,7 +20,7 @@ public class FF_DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 537.7;
+    public static final double TICKS_PER_REV = 537.6;
     public static final double MAX_RPM = 312; // gobilda drive motor 19.203:1 ratio
 
     /*
@@ -43,9 +43,9 @@ public class FF_DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 48./25.4; // in mecanum wheels are 96mm dia
+    public static double WHEEL_RADIUS = 48/25.4; // in mecanum wheels are 96mm dia
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 14.6;// 16.5 is actual
+    public static double TRACK_WIDTH = 10.1102;// 16.5 is actual
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -53,8 +53,8 @@ public class FF_DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.016;//1 / rpmToVelocity(MAX_RPM);
-    public static double kA = 0.00015;
+    public static double kV = 0.02;//1 / rpmToVelocity(MAX_RPM);
+    public static double kA = 0.0022;
     public static double kStatic = 0.05;
 
     /*
