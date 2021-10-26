@@ -111,15 +111,6 @@ public class Felipe {
     public void julioCenter() {julioPivot.setPosition(JULIOPIVOTCENTER);
     }
 
-    public void lowLevel() {
-        reset();
-        intakeOn();
-        liftPartial();
-        julioRight();
-        homieRight();
-
-    }
-
     public void highGoal() {
         reset();
         intakeOn();
