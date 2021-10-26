@@ -1,53 +1,69 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 public class Felipe {
 
     //Define Hardware Objects
+
+    ///private ElapsedTime     runtime = new ElapsedTime();
+
     public DcMotor  juanLift = null;
     public DcMotor  patrickIntake = null; // no longer used
     public Servo    julioPivot = null;
     public Servo    homieBox = null;
 
-    //Constants Lift
-    private static final double     JUANLIFTSPEED       =   0.65;
-    private static final int        JUANLIFTDOWN        =   0;
-    private static final int        JUANLIFTPARTIAL     =   8;
-    private static final int        JUANLIFTUP          = 14 ; //Number is in inches
+    // Need some features from the Linear Opmode to make the lift work
 
-    private static final int        TICKS_PER_LIFT_IN = 76; // determined experimentally
+
+    //Constants Lift
+    public static final double     JUANLIFTSPEED       =   0.65;
+    public static final int        JUANLIFTDOWN        =   0;
+    public static final int        JUANLIFTPARTIAL     =   6;
+    public static final int        JUANLIFTUP          =   10; //Number is in inches
+
+    public static final int        TICKS_PER_LIFT_IN = 108; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (JUANLIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
 
     //Constants for robot arm
-    public static final double      JULIOPIVOTLEFT      = 0;
-    public static final double      JULIOPIVOTRIGHT     = 1;
+    public static final double      JULIOPIVOTLEFT      = 0.1;
+    public static final double      JULIOPIVOTRIGHT     = 0.9;
     public static final double      JULIOPIVOTCENTER    = 0.5;
 
     //Constants for robot home box
-    public static final double      HOMIEBOXPIVOTLEFT      = 0;
-    public static final double      HOMIEBOXPIVOTRIGHT     = 1;
-    public static final double      HOMIEBOXPIVOTCENTER    = 0.5;
+    public static final double      HOMIEBOXPIVOTLEFT      = 1;
+    public static final double      HOMIEBOXPIVOTRIGHT     = 0.3;
+    public static final double      HOMIEBOXPIVOTCENTER    = 0.64;
 
     //Constants for robot intake
-    public static final double      PATRICKINTAKESPEED = .5;
+    public static final double      PATRICKINTAKESLOW = .3;//use this while lifting juan
     public static final double      PATRIKINTAKECOFF = 0;
-    public static final double      PATRICKINTAKEON = 0.9;
+    public static final double      PATRICKINTAKEON = 0.7;
+
+
+
 
     public void init(HardwareMap hwMap)  {
         juanLift = hwMap.get(DcMotor.class,"juanLift");
+        juanLift.setDirection(DcMotor.Direction.FORWARD);
+        juanLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        juanLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         patrickIntake = hwMap.get(DcMotor.class,"patrickIntake");
+        patrickIntake.setDirection(DcMotor.Direction.FORWARD);
+        patrickIntake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         julioPivot = hwMap.get(Servo.class,"julioPivot");
         homieBox = hwMap.get(Servo.class,"homieBox");
 
         //Positive=up and Negative=down
-        juanLift.setDirection(DcMotor.Direction.FORWARD);
-        juanLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        patrickIntake.setDirection(DcMotor.Direction.FORWARD);
-        patrickIntake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         julioPivot.setPosition(JULIOPIVOTCENTER);
         homieBox.setPosition(HOMIEBOXPIVOTCENTER);
@@ -67,6 +83,7 @@ public class Felipe {
         juanLift.setTargetPosition(JUANLIFTUP);// value is in ticks from above calculation
         juanLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         juanLift.setPower(JUANLIFTSPEED);
+        juanLift.setZeroPowerBehavior(BRAKE);
     }
     public void liftLower() {
         juanLift.setTargetPosition(JUANLIFTDOWN);// value is in ticks from above calculation
@@ -87,6 +104,9 @@ public class Felipe {
     }
     public void intakeOn() {
         patrickIntake.setPower(PATRICKINTAKEON);
+    }
+    public void intakeEject() {
+        patrickIntake.setPower(-PATRICKINTAKEON);
     }
 
     //Homie the box's methods
@@ -128,6 +148,8 @@ public class Felipe {
         homieRight();
 
     }
+
+
 
 }
 

@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 
@@ -18,11 +20,10 @@ public class CarouselTurnerThingy {
     public static final double      CAROUSELON = 0.5;
 
     // create a constructor to add in the special requirements
-    public CarouselTurnerThingy(HardwareMap hwMap, Alliance Color) {
 
 
 
-    //public void init(HardwareMap hwMap, Alliance Alliance)  {
+    public void init(HardwareMap hwMap, Alliance Color)  {
         carousel = hwMap.get(DcMotor.class,"carousel");
         carousel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if(Color == BLUE) {
@@ -37,8 +38,6 @@ public class CarouselTurnerThingy {
     public void carouselTurnOn() {
         carousel.setPower(CAROUSELOFF);
     }
-    public void carouselTurnOff() {
-        carousel.setPower(CAROUSELON);
-    }
+
 
 }
