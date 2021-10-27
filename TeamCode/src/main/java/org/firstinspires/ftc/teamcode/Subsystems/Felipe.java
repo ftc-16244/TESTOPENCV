@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
+
 public class Felipe {
 
     //Define Hardware Objects
@@ -22,6 +24,8 @@ public class Felipe {
 
     // Need some features from the Linear Opmode to make the lift work
 
+    LinearOpMode myOpMode;
+    ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
     public static final double     JUANLIFTSPEED       =   0.65;
@@ -47,7 +51,11 @@ public class Felipe {
     public static final double      PATRIKINTAKECOFF = 0;
     public static final double      PATRICKINTAKEON = 0.7;
 
+    LinearOpMode opmode;
 
+    public Felipe(LinearOpMode opmode) {
+        this.opmode = opmode;
+    }
 
 
     public void init(HardwareMap hwMap)  {
@@ -131,15 +139,6 @@ public class Felipe {
     public void julioCenter() {julioPivot.setPosition(JULIOPIVOTCENTER);
     }
 
-    public void lowLevel() {
-        reset();
-        intakeOn();
-        liftPartial();
-        julioRight();
-        homieRight();
-
-    }
-
     public void highGoal() {
         reset();
         intakeOn();
@@ -149,6 +148,57 @@ public class Felipe {
 
     }
 
+    public void sharedHub() {
+        reset();
+        intakeOn();
+        liftRise();
+        julioRight();
+        liftLower();
+        homieRight();
+
+    }
+
+    public void liftToTargetHeight(double height, double timeoutS){
+
+        int newTargetHeight;
+
+
+        // Ensure that the opmode is still active
+        if (opmode.opModeIsActive()) {
+
+            // Determine new target lift height in ticks based on the current position.
+            // When the match starts the current position should be reset to zero.
+
+            newTargetHeight = (int)(height *  TICKS_PER_LIFT_IN);
+            // Set the target now that is has been calculated
+            juanLift.setTargetPosition(newTargetHeight); //1000 ticks extends lift from 295mm to 530 mm which is 9.25 in per 1000 ticks or 108 ticks per in
+            // Turn On RUN_TO_POSITION
+            juanLift.setPower(Math.abs(JUANLIFTSPEED));
+            // reset the timeout time and start motion.
+            runtime.reset();
+            juanLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // keep looping while we are still active, and there is time left, and thr motor is running.
+            // Note: We use (isBusy() in the loop test, which means that when the motor hits
+            // its target position, motion will stop.
+
+            while (opmode.opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) && juanLift.isBusy()) {
+
+                // Display it for the driver.
+              //  telemetry.addData("Moving to New Lift Height",  "Running to %7d", newTargetHeight);
+
+               // telemetry.update();
+            }
+
+            // Stop all motion after exiting the while loop
+            juanLift.setPower(.25); // puts a low power to help hold the lift in place. There is a better way
+            //liftPosition = LiftPosition.HOLD;
+            // Turn off RUN_TO_POSITION
+            //felipe.juanLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
 
 
 }

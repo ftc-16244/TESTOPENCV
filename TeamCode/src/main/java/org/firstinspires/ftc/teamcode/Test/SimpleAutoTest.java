@@ -25,7 +25,7 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
 @Autonomous(group = "Test")
 public class SimpleAutoTest extends LinearOpMode {
     public static double DISTANCE = 30; // in
-    Felipe felipe = new Felipe(); // instantiate Felipe (the main implement)
+    Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
     CarouselTurnerThingy carousel = new CarouselTurnerThingy();
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
