@@ -25,7 +25,8 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
 @TeleOp(group = "Test")
 public class FelipeTest extends LinearOpMode {
 
-    Felipe felipe = new Felipe(); // instantiate Felipe (the main implement)
+    Felipe felipe = new Felipe(this);
+    //Felipe felipe = new Felipe(); // instantiate Felipe (the main implement)
     CarouselTurnerThingy carousel = new CarouselTurnerThingy();
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
