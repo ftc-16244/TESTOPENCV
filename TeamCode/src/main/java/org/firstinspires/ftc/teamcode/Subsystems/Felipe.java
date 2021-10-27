@@ -79,13 +79,7 @@ public class Felipe {
 
     //// Single operation methods - see below for methods to be called in Opmodes
 
-    public void reset() {
-        liftLower();
-        intakeOff();
-        julioCenter();
-        homieCenter();
 
-    }
     //Juan the lift's methods
     public void liftRise() {
         juanLift.setTargetPosition(JUANLIFTUP);// value is in ticks from above calculation
@@ -139,6 +133,15 @@ public class Felipe {
     public void julioCenter() {julioPivot.setPosition(JULIOPIVOTCENTER);
     }
 
+
+    public void reset() {
+        intakeOff();
+        liftPartial();
+        julioCenter();
+        homieCenter();
+        liftLower();
+    }
+
     public void highGoal() {
         reset();
         intakeOn();
@@ -148,12 +151,20 @@ public class Felipe {
 
     }
 
-    public void sharedHub() {
+    public void sharedHubBlue() {
         reset();
         intakeOn();
         liftRise();
         julioRight();
-        liftLower();
+        homieRight();
+
+    }
+
+    public void sharedHubRed() {
+        reset();
+        intakeOn();
+        liftRise();
+        julioLeft();
         homieRight();
 
     }
