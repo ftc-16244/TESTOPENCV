@@ -182,6 +182,28 @@ public class FelipeTest extends LinearOpMode {
                 felipe.homieRight();
                 telemetry.addData("Homie Right", "Complete ");
             }
+
+            //Complex method buttons
+            if (gamepad2.a) {
+                felipe.reset();
+                telemetry.addData("Reset", "Complete ");
+            }
+
+            if (gamepad2.dpad_left) {
+                felipe.highGoal();
+                telemetry.addData("High Goal", "Complete ");
+            }
+
+            if (gamepad2.dpad_up) {
+                felipe.sharedHubBlue();
+                telemetry.addData("sharedHubBlue", "Complete ");
+            }
+
+            if (gamepad2.dpad_down) {
+                felipe.sharedHubRed();
+                telemetry.addData("sharedHubRed", "Complete ");
+            }
+
             telemetry.update();
 
         }
