@@ -144,28 +144,28 @@ public class Felipe {
 
     public void highGoal() {
         reset();
-        intakeOn();
+        //intakeOn();
         liftRise();
-        julioRight();
-        homieRight();
+        //julioLeft();
+        //homieRight();
 
     }
 
     public void sharedHubBlue() {
         reset();
-        intakeOn();
+        //intakeOn();
         liftRise();
-        julioRight();
-        homieRight();
+        //julioRight();
+        //homieRight();
 
     }
 
     public void sharedHubRed() {
         reset();
-        intakeOn();
+        //intakeOn();
         liftRise();
-        julioLeft();
-        homieRight();
+        //julioLeft();
+        //homieRight();
 
     }
 
