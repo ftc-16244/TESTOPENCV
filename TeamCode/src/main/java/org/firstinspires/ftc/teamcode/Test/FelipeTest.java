@@ -44,7 +44,7 @@ public class FelipeTest extends LinearOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap, BLUE);
+        carousel.init(hardwareMap,  BLUE);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // WAIT FOR MATCH TO START
@@ -78,19 +78,19 @@ public class FelipeTest extends LinearOpMode {
 
             if (gamepad1.x) {
                 liftPosition = LiftPosition.PARTIAL;
-                liftToTargetHeight(felipe.JUANLIFTPARTIAL,10);
+                felipe.liftToTargetHeight(felipe.JUANLIFTPARTIAL,10);
                 telemetry.addData("Partial Lift", "Complete ");
 
             }
             if (gamepad1.y) {
                 liftPosition = LiftPosition.UP;
-                liftToTargetHeight(felipe.JUANLIFTUP,10);
+                felipe.liftToTargetHeight(felipe.JUANLIFTUP,10);
                 telemetry.addData("Max Lift", "Complete ");
             }
 
             if (gamepad1.a) {
                 liftPosition = LiftPosition.DOWN;
-                liftToTargetHeight(felipe.JUANLIFTDOWN,10);
+                felipe.liftToTargetHeight(felipe.JUANLIFTDOWN,10);
                 telemetry.addData("Lift Reset", "Complete ");
             }
             if (gamepad1.b) {
@@ -184,6 +184,10 @@ public class FelipeTest extends LinearOpMode {
             }
 
             //Complex method buttons
+            /**
+             *
+             * Gamepad #2  - Complex Methods             *
+             **/
             if (gamepad2.a) {
                 felipe.reset();
                 telemetry.addData("Reset", "Complete ");
@@ -219,45 +223,5 @@ public class FelipeTest extends LinearOpMode {
         }
     }
 
-    public void liftToTargetHeight(double height, double timeoutS){
 
-        int newTargetHeight;
-
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target lift height in ticks based on the current position.
-            // When the match starts the current position should be reset to zero.
-
-            newTargetHeight = (int)(height *  felipe.TICKS_PER_LIFT_IN);
-            // Set the target now that is has been calculated
-            felipe.juanLift.setTargetPosition(newTargetHeight); //1000 ticks extends lift from 295mm to 530 mm which is 9.25 in per 1000 ticks or 108 ticks per in
-            // Turn On RUN_TO_POSITION
-            felipe.juanLift.setPower(Math.abs(felipe.JUANLIFTSPEED));
-           // reset the timeout time and start motion.
-            runtime.reset();
-            felipe.juanLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // keep looping while we are still active, and there is time left, and thr motor is running.
-            // Note: We use (isBusy() in the loop test, which means that when the motor hits
-            // its target position, motion will stop.
-
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) && felipe.juanLift.isBusy()) {
-
-                // Display it for the driver.
-                telemetry.addData("Moving to New Lift Height",  "Running to %7d", newTargetHeight);
-
-                telemetry.update();
-            }
-
-            // Stop all motion after exiting the while loop
-            felipe.juanLift.setPower(.25); // puts a low power to help hold the lift in place. There is a better way
-            liftPosition = LiftPosition.HOLD;
-            // Turn off RUN_TO_POSITION
-            //felipe.juanLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        }
-    }
 }
