@@ -28,7 +28,7 @@ public class Felipe {
     ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
-    public static final double     JUANLIFTSPEED       =   0.65;
+    public static final double     JUANLIFTSPEED       =   0.4; // if this is too fast you cannot reset without hitting the framwe
     public static final int        JUANLIFTDOWN        =   0;
     public static final int        JUANLIFTPARTIAL     =   6;
     public static final int        JUANLIFTUP          =   10; //Number is in inches
@@ -136,21 +136,27 @@ public class Felipe {
 
     public void reset() {
         intakeOff();
-        liftPartial();
-        julioCenter();
+        //liftPartial(); this one will not work becasue there is no while loop to let the motor compplete ite rotations
+        liftToTargetHeight(JUANLIFTUP, 3);
         homieCenter();
-        liftLower();
+        julioCenter();
+        //liftLower(); no while loop - remove
+        liftToTargetHeight(JUANLIFTDOWN, 3);
     }
 
+    // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
     public void highGoal() {
-        reset();
-        //intakeOn();
-        liftRise();
-        //julioLeft();
-        //homieRight();
+        //reset(); you will need to manually reset for noe. it messes up the flow
+        intakeOff();
+        liftToTargetHeight(JUANLIFTPARTIAL, 3);
+        homieLeft();
+        liftToTargetHeight(JUANLIFTUP, 3);
+        julioLeft();
+        homieRight();
 
     }
-
+    // need LH and RH here too depending on which side yoy are approaching from
+    // blue you need to swing to the left, red swing to th right
     public void sharedHubBlue() {
         reset();
         //intakeOn();
