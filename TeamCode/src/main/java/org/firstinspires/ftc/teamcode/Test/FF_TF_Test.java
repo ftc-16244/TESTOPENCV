@@ -66,7 +66,7 @@ public class FF_TF_Test extends LinearOpMode {
    *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
    *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
    */
-    Barcode barcode = Barcode.CENTER;
+    Barcode barcode;
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
       "Ball",
@@ -161,6 +161,7 @@ public class FF_TF_Test extends LinearOpMode {
                       }
                       telemetry.update();
                     }
+                    barcode = Barcode.RIGHT; // goes here if no object is detected
                 }
             }
         }

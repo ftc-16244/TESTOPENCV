@@ -194,7 +194,12 @@ public class FelipeTest extends LinearOpMode {
             }
 
             if (gamepad2.dpad_left) {
-                felipe.highGoal();
+                felipe.highGoalLeft();
+                telemetry.addData("High Goal", "Complete ");
+            }
+
+            if (gamepad2.dpad_right) {
+                felipe.highGoalRight();;
                 telemetry.addData("High Goal", "Complete ");
             }
 
@@ -207,6 +212,21 @@ public class FelipeTest extends LinearOpMode {
                 felipe.sharedHubRed();
                 telemetry.addData("sharedHubRed", "Complete ");
             }
+
+            // Carosel Functions
+            if (gamepad2.x) {
+                carousel.carouselTurnCCW();
+                telemetry.addData("Turning CCW", "Complete ");
+            }
+            if (gamepad2.b) {
+                carousel.carouselTurnCW();
+                telemetry.addData("Turning CW", "Complete ");
+            }
+            if (gamepad2.y) {
+                carousel.carouselTurnOff();
+                telemetry.addData("Turning Off", "Complete ");
+            }
+
 
             telemetry.update();
 
