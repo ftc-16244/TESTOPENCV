@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.Test;
+package org.firstinspires.ftc.teamcode.Teleop;
+
+import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
@@ -12,8 +13,6 @@ import org.firstinspires.ftc.teamcode.Enums.PatrickState;
 import org.firstinspires.ftc.teamcode.Subsystems.CarouselTurnerThingy;
 import org.firstinspires.ftc.teamcode.Subsystems.Felipe;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-
-import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal
@@ -23,7 +22,7 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "Test")
-public class FelipeTest extends LinearOpMode {
+public class TeleopMeet1 extends LinearOpMode {
 
     Felipe felipe = new Felipe(this);
     //Felipe felipe = new Felipe(); // instantiate Felipe (the main implement)
