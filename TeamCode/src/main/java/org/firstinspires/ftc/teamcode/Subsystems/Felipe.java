@@ -31,14 +31,14 @@ public class Felipe {
     public static final double     JUANLIFTSPEED       =   0.4; // if this is too fast you cannot reset without hitting the framwe
     public static final int        JUANLIFTDOWN        =   0;
     public static final int        JUANLIFTPARTIAL     =   6;
-    public static final int        JUANLIFTUP          =   10; //Number is in inches
+    public static final int        JUANLIFTUP          =   12; //Number is in inches
 
-    public static final int        TICKS_PER_LIFT_IN = 108; // determined experimentally
+    public static final int        TICKS_PER_LIFT_IN = 80; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (JUANLIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
 
     //Constants for robot arm
-    public static final double      JULIOPIVOTLEFT      = 0.1;
-    public static final double      JULIOPIVOTRIGHT     = 0.9;
+    public static final double      JULIOPIVOTLEFT      = 0.15;
+    public static final double      JULIOPIVOTRIGHT     = 0.85;
     public static final double      JULIOPIVOTCENTER    = 0.5;
 
     //Constants for robot home box
@@ -145,14 +145,28 @@ public class Felipe {
     }
 
     // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
-    public void highGoal() {
+    public void highGoalLeft() {
         //reset(); you will need to manually reset for noe. it messes up the flow
-        intakeOff();
+        //intakeOn();
         liftToTargetHeight(JUANLIFTPARTIAL, 3);
+        intakeOff();
         homieLeft();
         liftToTargetHeight(JUANLIFTUP, 3);
         julioLeft();
+        //homieRight(); need to wait to drop the cargo if you leave it her it drops immediatley
+
+    }
+
+    // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
+    public void highGoalRight() {
+        //reset(); you will need to manually reset for noe. it messes up the flow
+        //intakeOn();
+        liftToTargetHeight(JUANLIFTPARTIAL, 3);
+        intakeOff();
         homieRight();
+        liftToTargetHeight(JUANLIFTUP, 3);
+        julioRight();
+        //homieRight(); need to wait to drop the cargo if you leave it her it drops immediatley
 
     }
     // need LH and RH here too depending on which side yoy are approaching from

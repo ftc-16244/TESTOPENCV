@@ -17,7 +17,7 @@ public class CarouselTurnerThingy {
     public DcMotor carousel = null;
 
     public static final double      CAROUSELOFF = 0;
-    public static final double      CAROUSELON = 0.5;
+    public static final double      CAROUSELON = 0.45;
 
     // create a constructor to add in the special requirements
 
@@ -35,9 +35,18 @@ public class CarouselTurnerThingy {
 
     }
 
-    public void carouselTurnOn() {
+    public void carouselTurnOff() {
         carousel.setPower(CAROUSELOFF);
+    }
+    public void carouselTurnCCW() {
+        carousel.setPower(CAROUSELON);
+    }
+
+    public void carouselTurnCW() {
+        carousel.setPower(-CAROUSELON);
+    }
+
     }
 
 
-}
+
