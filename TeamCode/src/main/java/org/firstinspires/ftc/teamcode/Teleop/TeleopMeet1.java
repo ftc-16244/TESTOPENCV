@@ -163,7 +163,15 @@ public class TeleopMeet1 extends LinearOpMode {
                 telemetry.addData("High Goal", "Complete ");
             }
 
-           
+            if (gamepad2.dpad_up) {
+                felipe.sharedHubBlue();
+                telemetry.addData("shared hub blue", "Complete ");
+            }
+
+            if (gamepad2.dpad_down) {
+                felipe.sharedHubRed();
+                telemetry.addData("sharedHubRed", "Complete ");
+            }
 
             // Carosel Functions
             if (gamepad2.x) {
