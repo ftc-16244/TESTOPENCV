@@ -137,7 +137,7 @@ public class TeleopMeet1 extends LinearOpMode {
 
             }
 
-            //right bumper once to turn intake lifon, right bumper to collect, left bumper to eject, left bumper again
+
             /**
              *
              * Gamepad #1 DPAD Julio COntrols
@@ -171,14 +171,14 @@ public class TeleopMeet1 extends LinearOpMode {
              *
              **/
 
-            if (gamepad1.left_trigger > 0.25) { //no purpose
+            if (gamepad1.left_trigger > 0.25) {
                 felipe.homieLeft();
                 //debounce(400);
                 telemetry.addData("Homie Left", "Complete ");
 
                 //debounce(400);
             }
-            if (gamepad1.right_trigger > 0.25) { //no purpose
+            if (gamepad1.right_trigger > 0.25) {
                 felipe.homieRight();
                 telemetry.addData("Homie Right", "Complete ");
             }
