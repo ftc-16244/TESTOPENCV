@@ -31,7 +31,7 @@ public class Felipe {
     public static final double     JUANLIFTSPEED       =   0.4; // if this is too fast you cannot reset without hitting the framwe
     public static final int        JUANLIFTDOWN        =   0;
     public static final int        JUANLIFTPARTIAL     =   6;
-    public static final int        JUANLIFTUP          =   12; //Number is in inches
+    public static final double     JUANLIFTUP          =   11.5; //Number is in inches
 
     public static final int        TICKS_PER_LIFT_IN = 80; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (JUANLIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
@@ -174,7 +174,7 @@ public class Felipe {
     public void sharedHubBlue() {
         reset();
         //intakeOn();
-        liftRise();
+        liftPartial();
         //julioRight();
         //homieRight();
 
@@ -183,7 +183,7 @@ public class Felipe {
     public void sharedHubRed() {
         reset();
         //intakeOn();
-        liftRise();
+        liftPartial();
         //julioLeft();
         //homieRight();
 
