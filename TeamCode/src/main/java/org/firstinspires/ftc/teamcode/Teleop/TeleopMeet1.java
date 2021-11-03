@@ -75,27 +75,7 @@ public class TeleopMeet1 extends LinearOpMode {
              *
              **/
 
-            if (gamepad1.x) {
-                liftPosition = LiftPosition.PARTIAL;
-                felipe.liftToTargetHeight(felipe.JUANLIFTPARTIAL,10);
-                telemetry.addData("Partial Lift", "Complete ");
 
-            }
-            if (gamepad1.y) {
-                liftPosition = LiftPosition.UP;
-                felipe.liftToTargetHeight(felipe.JUANLIFTUP,10);
-                telemetry.addData("Max Lift", "Complete ");
-            }
-
-            if (gamepad1.a) {
-                liftPosition = LiftPosition.DOWN;
-                felipe.liftToTargetHeight(felipe.JUANLIFTDOWN,10);
-                telemetry.addData("Lift Reset", "Complete ");
-            }
-            if (gamepad1.b) {
-                felipe.homieCenter();
-                telemetry.addData("Add message when ready", "Complete ");
-            }
             /**
              *
              * Gamepad #1 Bumpers
@@ -144,27 +124,7 @@ public class TeleopMeet1 extends LinearOpMode {
              *
              **/
 
-            if (gamepad1.dpad_left) { //does not work
-                felipe.julioLeft();
 
-                telemetry.addData("Julio going left", "Complete ");
-            }
-
-            if (gamepad1.dpad_up){
-
-                telemetry.addData("Nothing Yet", "Complete ");
-            }
-            if (gamepad1.dpad_right) {
-              //felipe.julioRight();
-
-
-                telemetry.addData("Julio going right", "Complete ");
-            }
-            if (gamepad1.dpad_down) {//this one works
-                felipe.julioCenter();
-                telemetry.addData("Julio going to center", "Complete ");
-
-            }
             /**
              *
              * Gamepad #1 Triggers - Homie Controls
@@ -203,15 +163,7 @@ public class TeleopMeet1 extends LinearOpMode {
                 telemetry.addData("High Goal", "Complete ");
             }
 
-            if (gamepad2.dpad_up) {
-                felipe.sharedHubBlue();
-                telemetry.addData("sharedHubBlue", "Complete ");
-            }
-
-            if (gamepad2.dpad_down) {
-                felipe.sharedHubRed();
-                telemetry.addData("sharedHubRed", "Complete ");
-            }
+           
 
             // Carosel Functions
             if (gamepad2.x) {
