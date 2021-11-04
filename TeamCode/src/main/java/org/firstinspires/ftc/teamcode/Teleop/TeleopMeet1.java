@@ -112,6 +112,7 @@ public class TeleopMeet1 extends LinearOpMode {
             if (gamepad1.right_bumper && patrickState == PatrickState.EJECT) {
                 felipe.intakeOff();
                 patrickState = PatrickState.OFF;
+
                 telemetry.addData("Collector State",patrickState);
                 debounce(175);
 
