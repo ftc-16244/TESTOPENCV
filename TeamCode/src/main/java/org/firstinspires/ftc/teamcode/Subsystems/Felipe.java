@@ -28,7 +28,7 @@ public class Felipe {
     ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
-    public static final double     JUANLIFTSPEED       =   0.35; // if this is too fast you cannot reset without hitting the framwe
+    public static final double     JUANLIFTSPEED       =   0.3; // if this is too fast you cannot reset without hitting the framwe
     public static final int        JUANLIFTDOWN        =   0;
     public static final int        JUANLIFTPARTIAL     =   6;
     public static final int        JUANLIFTLOW         =   4;
