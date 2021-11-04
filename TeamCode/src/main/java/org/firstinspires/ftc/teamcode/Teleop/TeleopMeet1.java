@@ -85,6 +85,7 @@ public class TeleopMeet1 extends LinearOpMode {
         
             if (gamepad1.left_bumper && patrickState == PatrickState.OFF) {
                 felipe.intakeOn();
+                felipe.homieCenter();
                 patrickState = PatrickState.COLLECT;
                 telemetry.addData("Collector State", patrickState);
                 debounce(175); // need to pause for a few ms to let drive release the button
@@ -102,6 +103,7 @@ public class TeleopMeet1 extends LinearOpMode {
             if (gamepad1.right_bumper && patrickState == PatrickState.OFF) {
 
                 felipe.intakeEject();
+                felipe.homieCenter();
                 patrickState = PatrickState.EJECT;
 
                 telemetry.addData("Collector State", patrickState);
@@ -163,8 +165,8 @@ public class TeleopMeet1 extends LinearOpMode {
                 telemetry.addData("High Goal", "Complete ");
             }
 
-            if (gamepad2.dpad_up) {
-                felipe.liftToTargetHeight(Felipe.JUANLIFTLOW, 3);
+            if (gamepad2.dpad_down) {
+                felipe.liftToTargetHeight(Felipe.JUANLIFTDOWN, 3);
                 telemetry.addData("lower elevator", "Complete ");
             }
 
