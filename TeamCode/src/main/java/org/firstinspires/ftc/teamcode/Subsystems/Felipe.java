@@ -140,6 +140,10 @@ public class Felipe {
         //liftPartial(); this one will not work becasue there is no while loop to let the motor compplete ite rotations
         liftToTargetHeight(JUANLIFTUP, 3);
         homieCenter();
+        runtime.reset();
+        while (runtime.seconds() < 0.5){
+
+        }
         julioCenter();
         //liftLower(); no while loop - remove
         liftToTargetHeight(JUANLIFTDOWN, 3);
