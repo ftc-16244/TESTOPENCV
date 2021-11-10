@@ -23,7 +23,7 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
  */
 @Config
 @Autonomous(group = "Test")
-public class BlueCaouselAuto extends LinearOpMode {
+public class BlueCarouselAuto extends LinearOpMode {
     public static double DISTANCE = 30; // in
     Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
     CarouselTurnerThingy carousel = new CarouselTurnerThingy();
