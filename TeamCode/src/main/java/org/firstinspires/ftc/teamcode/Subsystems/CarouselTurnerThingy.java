@@ -17,7 +17,7 @@ public class CarouselTurnerThingy {
     public DcMotor carousel = null;
 
     public static final double      CAROUSELOFF = 0;
-    public static final double      CAROUSELON = 0.45;
+    public static final double      CAROUSELON = 0.40;
 
     // create a constructor to add in the special requirements
 
