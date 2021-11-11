@@ -45,7 +45,7 @@ public class Felipe {
     //Constants for robot home box
     public static final double      HOMIEBOXPIVOTLEFT      = 1;
     public static final double      HOMIEBOXPIVOTRIGHT     = 0.3;
-    public static final double      HOMIEBOXPIVOTCENTER    = 0.64;
+    public static final double      HOMIEBOXPIVOTCENTER    = 0.65;
 
     //Constants for robot intake
     public static final double      PATRICKINTAKESLOW = .3;//use this while lifting juan
