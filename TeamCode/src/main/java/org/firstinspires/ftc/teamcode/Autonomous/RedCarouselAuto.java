@@ -82,10 +82,13 @@ public class RedCarouselAuto extends LinearOpMode {
                 .addTemporalMarker(.25,()->{carousel.carouselTurnCW();})
                 .build();
         Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
-                .strafeRight(22)
+                //.strafeRight(22)
+                .lineToLinearHeading(new Pose2d(26,29))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
-
+        /*Trajectory  traj8 = drive.trajectoryBuilder(traj7.end())
+                .lineToLinearHeading(new Pose2d(26,29))
+                .build();*/
 
 
         waitForStart();
@@ -99,7 +102,8 @@ public class RedCarouselAuto extends LinearOpMode {
         drive.followTrajectory(traj4);
         drive.followTrajectory(traj5);
         drive.followTrajectory(traj6);
-        // dealy to let acrosel turn
+
+        // delay to let carousel turn
         timer.reset();
         while(timer.seconds() < ducktime) drive.update();
 
