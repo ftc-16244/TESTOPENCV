@@ -28,24 +28,26 @@ public class Felipe {
     ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
-    public static final double     JUANLIFTSPEED       =   0.3; // if this is too fast you cannot reset without hitting the framwe
-    public static final int     JUANLIFTDOWN        =   0;
-    public static final int        JUANLIFTPARTIAL     =   6;
-    public static final int        JUANLIFTLOW         =   4;
-    public static final int        JUANLIFTUP          =   11; //Number is in inches
+    public static final double      JUANLIFTSPEED       =   0.9; // if this is too fast you cannot reset without hitting the framwe
+    public static final int         JUANLIFTDOWN        =   0;
+    public static final int         JUANLIFTPARTIAL     =   6;
+    public static final int         JUANLIFTLOW         =   4;
+    public static final int         JUANLIFTUP          =   11; //Number is in inches
 
     public static final int        TICKS_PER_LIFT_IN = 80; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (JUANLIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
 
     //Constants for robot arm
-    public static final double      JULIOPIVOTLEFT      = 0.15;
-    public static final double      JULIOPIVOTRIGHT     = 0.85;
-    public static final double      JULIOPIVOTCENTER    = 0.5;
+    public static final double      JULIOPIVOTLEFT          = 0.15;
+    public static final double      JULIOPIVOTRIGHT         = 0.85;
+    public static final double      JULIOPIVOTCENTER        = 0.51;
+    public static final double      JULIODELAY              = 0.5;
 
     //Constants for robot home box
-    public static final double      HOMIEBOXPIVOTLEFT      = 1;
-    public static final double      HOMIEBOXPIVOTRIGHT     = 0.3;
-    public static final double      HOMIEBOXPIVOTCENTER    = 0.65;
+    public static final double      HOMIEBOXPIVOTLEFT       = 1;
+    public static final double      HOMIEBOXPIVOTRIGHT      = 0.3;
+    public static final double      HOMIEBOXPIVOTCENTER     = 0.66;
+    public static final double      HOMIEDELAY              = 0.15;
 
     //Constants for robot intake
     public static final double      PATRICKINTAKESLOW = .3;//use this while lifting juan
@@ -98,6 +100,7 @@ public class Felipe {
         juanLift.setTargetPosition(JUANLIFTPARTIAL);// value is in ticks from above calculation
         juanLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         juanLift.setPower(JUANLIFTSPEED);
+
     }
 
 
@@ -141,10 +144,14 @@ public class Felipe {
         liftToTargetHeight(JUANLIFTUP, 3);
         homieCenter();
         runtime.reset();
-        while (runtime.seconds() < 0.5){
+        while (runtime.seconds() < HOMIEDELAY) {
 
         }
+        runtime.reset();
         julioCenter();
+        while (runtime.seconds() < JULIODELAY){
+
+        }
         //liftLower(); no while loop - remove
         liftToTargetHeight(JUANLIFTDOWN, 3);
     }
