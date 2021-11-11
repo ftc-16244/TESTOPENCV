@@ -4,15 +4,26 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.DrivetrainRR;
+import org.firstinspires.ftc.teamcode.Subsystems.Felipe;
 import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 
-@TeleOp(name="GunShow Teleop", group="Teleop")
+import static org.firstinspires.ftc.teamcode.Subsystems.Felipe.JUANLIFTPARTIAL;
+import static org.firstinspires.ftc.teamcode.Subsystems.Felipe.JUANLIFTSPEED;
+
+@TeleOp(name="Test_Teleop", group="Teleop")
 @Disabled
 public class Test_Teleop extends LinearOpMode {
-
+    Felipe felipe = new Felipe(this);
+    LiftPosition liftstate = LiftPosition.HOLD;
+    ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
+        felipe.init(hardwareMap);
         // Instantiate subsytems components here
         DrivetrainRR drivetrain = new DrivetrainRR(hardwareMap); // this is the roadrunner derivative of Simple Mechanum Drive we copied
         StandardTrackingWheelLocalizer localizer = new StandardTrackingWheelLocalizer(hardwareMap);      // Add servos or other motors here as needed.
@@ -61,8 +72,33 @@ public class Test_Teleop extends LinearOpMode {
             telemetry.addData("finalX", poseEstimate.getX());
             telemetry.addData("finalY", poseEstimate.getY());
             telemetry.addData("finalHeading", poseEstimate.getHeading());
+            telemetry.addData("lift state", liftstate);
+            telemetry.addData("Current Lift Pos", felipe.juanLift.getCurrentPosition());
+            telemetry.addData("Target Position",felipe.JUANLIFTPARTIAL);
             telemetry.update();
 
+            // Gampad 1
+
+            if (gamepad1.x){
+                liftstate = LiftPosition.PARTIAL;
+
+            }
+            if (gamepad1.y){
+                liftstate = LiftPosition.DOWN;
+            }
+
+
+            if (liftstate == LiftPosition.PARTIAL) {
+                felipe.juanLift.setTargetPosition(JUANLIFTPARTIAL);// value is in ticks from above calculation
+                felipe.juanLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                while ( felipe.juanLift.getCurrentPosition() < felipe.JUANLIFTPARTIAL *Felipe.TICKS_PER_LIFT_IN  ){
+
+                    felipe.juanLift.setPower(JUANLIFTSPEED);
+                }
+                //liftstate = LiftPosition.HOLD;
+
+            }
 
         }
     }
