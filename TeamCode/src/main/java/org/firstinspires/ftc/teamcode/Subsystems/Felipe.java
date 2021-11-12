@@ -40,7 +40,7 @@ public class Felipe {
     //Constants for robot arm
     public static final double      JULIOPIVOTLEFT          = 0.15;
     public static final double      JULIOPIVOTRIGHT         = 0.85;
-    public static final double      JULIOPIVOTCENTER        = 0.51;
+    public static final double      JULIOPIVOTCENTER        = 0.49;
     public static final double      JULIODELAY              = 0.5;
 
     //Constants for robot home box
