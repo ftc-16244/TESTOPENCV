@@ -81,7 +81,7 @@ public class BlueCarouselAuto extends LinearOpMode {
                 .build();
         Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
                 //.back(20)
-                .lineToLinearHeading(new Pose2d(26,-32,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(6,-36,Math.toRadians(-180)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
 

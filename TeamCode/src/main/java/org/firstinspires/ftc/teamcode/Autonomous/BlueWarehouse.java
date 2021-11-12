@@ -62,7 +62,7 @@ public class BlueWarehouse extends LinearOpMode {
                 .back(18)
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
-                .strafeRight(8)
+                .strafeRight(7)
                 .addDisplacementMarker(()->{felipe.homieLeft();})
                 .build();
         // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
@@ -71,7 +71,7 @@ public class BlueWarehouse extends LinearOpMode {
                 .addDisplacementMarker(()->{felipe.reset();})
                 .build();
         Trajectory traj5 = drive.trajectoryBuilder(traj4.end())
-                .splineToConstantHeading(new Vector2d(-4,7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-4,2), Math.toRadians(90))
                 .build();
         Trajectory traj6 = drive.trajectoryBuilder(traj5.end())
                 .forward(28)
