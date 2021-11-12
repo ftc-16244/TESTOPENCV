@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Test;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -23,6 +24,7 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "Test")
+@Disabled
 public class FelipeTest extends LinearOpMode {
 
     Felipe felipe = new Felipe(this);
