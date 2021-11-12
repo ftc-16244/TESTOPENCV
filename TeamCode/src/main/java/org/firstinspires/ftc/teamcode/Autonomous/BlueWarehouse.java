@@ -53,17 +53,20 @@ public class BlueWarehouse extends LinearOpMode {
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories Here
         ///////////////////////////////////////////////////////////////////////////
+
+        // The short distances appear to make the more complex motions fail. Thus this is done step by step
         Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
                 .forward(15)
                 .addTemporalMarker(-1,()->{felipe.highGoalRight();})
                 .build();
-
+        // note that trajectory 2 has a start pose that is the end of trajectory 1 plus the 90 deg rotation from the
+        // drive.turn command between traj 1 and traj 2.
         Trajectory  traj2 = drive.trajectoryBuilder(traj1.end().plus(new Pose2d(0,0,Math.toRadians(90))))
-                .back(18)
+                .back(19)
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
-                .strafeRight(7)
-                .addDisplacementMarker(()->{felipe.homieLeft();})
+                .strafeRight(8)
+                .addTemporalMarker(-0.5,()->{felipe.homieLeft();})
                 .build();
         // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())

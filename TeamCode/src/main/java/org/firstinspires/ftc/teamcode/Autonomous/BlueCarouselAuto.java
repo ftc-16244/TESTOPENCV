@@ -62,7 +62,7 @@ public class BlueCarouselAuto extends LinearOpMode {
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
                 .strafeLeft(9.5)
-                .addDisplacementMarker(()->{felipe.homieRight();})
+                .addTemporalMarker(-0.5,()->{felipe.homieRight();})
                 .build();
         // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
@@ -71,17 +71,18 @@ public class BlueCarouselAuto extends LinearOpMode {
                 .build();
 
         Trajectory  traj5 = drive.trajectoryBuilder(traj4.end())
-                //.forward(45)
-                .lineToLinearHeading(new Pose2d(9,-35,Math.toRadians(-180)))
+                // Stright line with rotation to get close to carousel
+                .lineToLinearHeading(new Pose2d(9,-34,Math.toRadians(-180)))
 
                 .build();
         Trajectory  traj6 = drive.trajectoryBuilder(traj5.end())
+                // final touch up to engage carousel
                 .forward(5)
                 .addTemporalMarker(.25,()->{carousel.carouselTurnCCW();})
                 .build();
         Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
-                //.back(20)
-                .lineToLinearHeading(new Pose2d(6,-36,Math.toRadians(-180)))
+                //back away but stay out of the wall to make it move better
+                .lineToLinearHeading(new Pose2d(26,-32,Math.toRadians(-180)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
 
