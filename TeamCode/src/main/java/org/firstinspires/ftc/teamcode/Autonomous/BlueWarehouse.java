@@ -62,19 +62,19 @@ public class BlueWarehouse extends LinearOpMode {
         // note that trajectory 2 has a start pose that is the end of trajectory 1 plus the 90 deg rotation from the
         // drive.turn command between traj 1 and traj 2.
         Trajectory  traj2 = drive.trajectoryBuilder(traj1.end().plus(new Pose2d(0,0,Math.toRadians(90))))
-                .back(19)
+                .back(20)
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
                 .strafeRight(8)
-                .addTemporalMarker(-0.5,()->{felipe.homieLeft();})
+                .addTemporalMarker(-0.3,()->{felipe.homieLeft();})
                 .build();
         // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .strafeLeft(8.5)
+                .strafeLeft(9)
                 .addDisplacementMarker(()->{felipe.reset();})
                 .build();
         Trajectory traj5 = drive.trajectoryBuilder(traj4.end())
-                .splineToConstantHeading(new Vector2d(-4,2), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-7 ,10), Math.toRadians(90))
                 .build();
         Trajectory traj6 = drive.trajectoryBuilder(traj5.end())
                 .forward(28)

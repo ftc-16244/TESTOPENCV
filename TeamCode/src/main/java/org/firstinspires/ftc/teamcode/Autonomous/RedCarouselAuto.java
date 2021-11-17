@@ -55,26 +55,26 @@ public class RedCarouselAuto extends LinearOpMode {
         ///////////////////////////////////////////////////////////////////////////
         Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
                 .forward(15)
-                .addTemporalMarker(-1,()->{felipe.highGoalLeft();})
+                .addTemporalMarker(-1,()->{felipe.highGoalRight();})
                 .build();
 
-        Trajectory  traj2 = drive.trajectoryBuilder(traj1.end().plus(new Pose2d(0,0,Math.toRadians(-90))))
-                .forward(18)
+        Trajectory  traj2 = drive.trajectoryBuilder(traj1.end().plus(new Pose2d(0,0,Math.toRadians(90))))
+                .back(21)
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
-                .strafeLeft(9)
-                .addDisplacementMarker(()->{felipe.homieRight();})
+                .strafeRight(8.5)
+                .addTemporalMarker(-0.3,()->{felipe.homieLeft();})
                 .build();
         // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .strafeRight(8)
+                .strafeLeft(8)
                 .addDisplacementMarker(()->{felipe.reset();})
                 .build();
 
         Trajectory  traj5 = drive.trajectoryBuilder(traj4.end())
                 //.forward(45)
-                .lineToLinearHeading(new Pose2d(4
-                        ,28,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(0  
+                        ,27,Math.toRadians(90)))
 
                 .build();
         Trajectory  traj6 = drive.trajectoryBuilder(traj5.end())
@@ -83,7 +83,7 @@ public class RedCarouselAuto extends LinearOpMode {
                 .build();
         Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
                 //.strafeRight(22)
-                .lineToLinearHeading(new Pose2d(26,29))
+                .lineToLinearHeading(new Pose2d(24,28))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
         /*Trajectory  traj8 = drive.trajectoryBuilder(traj7.end())
@@ -96,7 +96,7 @@ public class RedCarouselAuto extends LinearOpMode {
         if (isStopRequested()) return;
 
         drive.followTrajectory(traj1);
-        drive.turn(Math.toRadians(-90));
+        drive.turn(Math.toRadians(90));
         drive.followTrajectory(traj2);
         drive.followTrajectory(traj3);
         drive.followTrajectory(traj4);

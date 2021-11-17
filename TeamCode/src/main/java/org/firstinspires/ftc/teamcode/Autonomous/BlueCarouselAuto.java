@@ -72,7 +72,7 @@ public class BlueCarouselAuto extends LinearOpMode {
 
         Trajectory  traj5 = drive.trajectoryBuilder(traj4.end())
                 // Stright line with rotation to get close to carousel
-                .lineToLinearHeading(new Pose2d(9,-34,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-180)))
 
                 .build();
         Trajectory  traj6 = drive.trajectoryBuilder(traj5.end())
@@ -82,7 +82,7 @@ public class BlueCarouselAuto extends LinearOpMode {
                 .build();
         Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(26,-32,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(-180)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
 
