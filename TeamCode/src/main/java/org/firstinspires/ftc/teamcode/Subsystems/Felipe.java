@@ -38,9 +38,9 @@ public class Felipe {
     private static final int        LIFT_HEIGHT_HIGH = (int) (JUANLIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
 
     //Constants for robot arm
-    public static final double      JULIOPIVOTLEFT          = 0.15;
-    public static final double      JULIOPIVOTRIGHT         = 0.85;
-    public static final double      JULIOPIVOTCENTER        = 0.49;
+    public static final double      JULIOPIVOTLEFT          = 0.1;
+    public static final double      JULIOPIVOTRIGHT         = 0.8;
+    public static final double      JULIOPIVOTCENTER        = 0.445;
     public static final double      JULIODELAY              = 0.5;
 
     //Constants for robot home box
@@ -134,7 +134,8 @@ public class Felipe {
     public void julioLeft() {
         julioPivot.setPosition(JULIOPIVOTLEFT);
     }
-    public void julioCenter() {julioPivot.setPosition(JULIOPIVOTCENTER);
+    public void julioCenter() {
+        julioPivot.setPosition(JULIOPIVOTCENTER);
     }
 
 
