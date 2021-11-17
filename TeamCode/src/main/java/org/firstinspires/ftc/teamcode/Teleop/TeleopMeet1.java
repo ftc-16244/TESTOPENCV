@@ -76,7 +76,10 @@ public class TeleopMeet1 extends LinearOpMode {
              * Gamepad #1 Buttons -
              *
              **/
-
+            if (gamepad1.a) {
+                felipe.reset();
+                telemetry.addData("Reset", "Complete ");
+            }
 
             /**
              *
@@ -125,10 +128,23 @@ public class TeleopMeet1 extends LinearOpMode {
 
             /**
              *
-             * Gamepad #1 DPAD Julio COntrols
+             * Gamepad #1 DPAD Felipe Controls
              *
              **/
+            if (gamepad1.dpad_left) {
+                felipe.highGoalLeft();
+                telemetry.addData("High Goal", "Complete ");
+            }
 
+            if (gamepad1.dpad_right) {
+                felipe.highGoalRight();;
+                telemetry.addData("High Goal", "Complete ");
+            }
+
+            if (gamepad1.dpad_down) {
+                felipe.liftToTargetHeight(Felipe.JUANLIFTDOWN, 3);
+                telemetry.addData("lower elevator", "Complete ");
+            }
 
             /**
              *
@@ -148,33 +164,15 @@ public class TeleopMeet1 extends LinearOpMode {
                 telemetry.addData("Homie Right", "Complete ");
             }
 
-            //Complex method buttons
-            /**
+             /**
              *
-             * Gamepad #2  - Complex Methods             *
+             * Gamepad #2  - Buttons       *
              **/
-            if (gamepad2.a) {
-                felipe.reset();
-                telemetry.addData("Reset", "Complete ");
-            }
-
-            if (gamepad2.dpad_left) {
-                felipe.highGoalLeft();
-                telemetry.addData("High Goal", "Complete ");
-            }
-
-            if (gamepad2.dpad_right) {
-                felipe.highGoalRight();;
-                telemetry.addData("High Goal", "Complete ");
-            }
-
-            if (gamepad2.dpad_down) {
-                felipe.liftToTargetHeight(Felipe.JUANLIFTDOWN, 3);
-                telemetry.addData("lower elevator", "Complete ");
-            }
 
 
-            // Carosel Functions
+
+
+            // Carousel Functions
             if (gamepad2.x) {
                 carousel.carouselTurnCCW();
                 telemetry.addData("Turning CCW", "Complete ");
@@ -187,6 +185,24 @@ public class TeleopMeet1 extends LinearOpMode {
                 carousel.carouselTurnOff();
                 telemetry.addData("Turning Off", "Complete ");
             }
+
+              /**
+             *
+             * Gamepad #2 Bumpers
+             *
+             **/
+
+            /**
+             *
+             * Gamepad #2 Triggers
+             *
+             **/
+            /**
+             *
+             * Gamepad #2 DPAD
+             *
+             **/
+
 
 
             telemetry.update();
