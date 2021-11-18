@@ -54,7 +54,7 @@ public class FuerteFelipe {
 
     //Juan the lift's methods
     public void liftRise() {
-        liftToTargetHeight(LIFT_HEIGHT_HIGH,3);
+        liftToTargetHeight(4,3);
     }
 
 
