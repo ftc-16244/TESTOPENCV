@@ -27,12 +27,10 @@ public class FuerteFelipe {
     //Constants Lift
     public static final double      linearActuatorSPEED   =   0.6; // if this is too fast you cannot reset without hitting the framwe
     public static final int         linearActuatorDOWN        =   0;
-    public static final int         linearActuatorPARTIAL     =   6;
-    public static final int         linearActuatorLOW         =   4;
-    public static final int         linearActuatorUP          =   4; //Number is in inches
+    public static final int         linearActuatorPARTIAL     =   4;
+    public static final int         linearActuatorUP          =   7; //Number is in inches
 
     public static final int        TICKS_PER_LIFT_IN = 460; // determined experimentally 96 mm into inches = 3.73 = 360/3.73= 95
-    private static final int        LIFT_HEIGHT_HIGH = (int) (linearActuatorUP * TICKS_PER_LIFT_IN); // converts to ticks
 
     LinearOpMode opmode;
 
@@ -54,17 +52,17 @@ public class FuerteFelipe {
 
     //Juan the lift's methods
     public void liftRise() {
-        liftToTargetHeight(4,3);
+        liftToTargetHeight(linearActuatorUP,3);
+    }
+    public void liftPartial() {
+        liftToTargetHeight(linearActuatorPARTIAL,3);
+    }
+    public void liftLow() {
+        liftToTargetHeight(linearActuatorDOWN,3);
     }
 
 
     // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
-    public void highGoalLeft() {
-        //reset(); you will need to manually reset for noe. it messes up the flow
-        liftToTargetHeight(linearActuatorPARTIAL, 3);
-        liftToTargetHeight(linearActuatorUP, 3);
-
-    }
 
 
     public void liftToTargetHeight(double height, double timeoutS){
