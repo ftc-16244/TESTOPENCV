@@ -132,10 +132,10 @@ public class NewFelipeTest extends LinearOpMode {
                 fuerteFelipe.liftRise();
             }
             if (gamepad1.dpad_right) {
-                fuerteFelipe.liftPartial();
+
             }
             if (gamepad1.dpad_down) {//this one works
-                fuerteFelipe.liftLower();
+
 
             }
             /**

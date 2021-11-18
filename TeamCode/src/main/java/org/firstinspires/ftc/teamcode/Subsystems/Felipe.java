@@ -233,9 +233,9 @@ public class Felipe {
                     (runtime.seconds() < timeoutS) && juanLift.isBusy()) {
 
                 // Display it for the driver.
-              //  telemetry.addData("Moving to New Lift Height",  "Running to %7d", newTargetHeight);
+                //  telemetry.addData("Moving to New Lift Height",  "Running to %7d", newTargetHeight);
 
-               // telemetry.update();
+                // telemetry.update();
             }
 
             // Stop all motion after exiting the while loop

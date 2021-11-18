@@ -15,7 +15,7 @@ public class NewFelipe {
     public static final double      JULIOARMLEFT          = 90.0;
     public static final double      JULIOARMCENTER         = 0.0;
     public static final double      JULIOARMRIGHT        = -90.0;
-    public static final double      JULIOTURNSPEED       =   0.6;
+    public static final double      JULIOTURNSPEED       =   0.3;
     public static final int         TICKS_PER_REV         = 500;
     public static final int         TICKS_PER_DEGREE = TICKS_PER_REV/360;
     ElapsedTime runtime = new ElapsedTime();
