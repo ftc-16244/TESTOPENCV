@@ -72,9 +72,10 @@ public class FuerteFelipe {
 
     }
 
-
     public void reset() {
-
+        linearActuator.setTargetPosition(linearActuatorDOWN);// value is in ticks from above calculation
+        linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearActuator.setPower(linearActuatorSPEED);
     }
 
     // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal

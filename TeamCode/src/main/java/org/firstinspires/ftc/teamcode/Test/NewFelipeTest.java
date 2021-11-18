@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
 import org.firstinspires.ftc.teamcode.Enums.PatrickState;
 import org.firstinspires.ftc.teamcode.Subsystems.CarouselTurnerThingy;
 import org.firstinspires.ftc.teamcode.Subsystems.Felipe;
+import org.firstinspires.ftc.teamcode.Subsystems.FuerteFelipe;
 import org.firstinspires.ftc.teamcode.Subsystems.NewFelipe;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -28,6 +29,7 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
 public class NewFelipeTest extends LinearOpMode {
 
     NewFelipe felipe = new NewFelipe(this);
+    FuerteFelipe fuerteFelipe = new FuerteFelipe(this);
     ElapsedTime runtime = new ElapsedTime();
 
 
@@ -40,7 +42,7 @@ public class NewFelipeTest extends LinearOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // initialize the other subsystems
         felipe.init(hardwareMap);
-
+        fuerteFelipe.init(hardwareMap);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // WAIT FOR MATCH TO START
@@ -78,11 +80,11 @@ public class NewFelipeTest extends LinearOpMode {
 
                 }
             if (gamepad1.y) {
-
+                felipe.julioRight90();
             }
 
             if (gamepad1.a) {
-
+                felipe.julioCenter();
             }
             if (gamepad1.b) {
 
@@ -127,14 +129,13 @@ public class NewFelipeTest extends LinearOpMode {
             }
 
             if (gamepad1.dpad_up){
-
-
+                fuerteFelipe.liftRise();
             }
             if (gamepad1.dpad_right) {
-
+                fuerteFelipe.liftPartial();
             }
             if (gamepad1.dpad_down) {//this one works
-
+                fuerteFelipe.liftLower();
 
             }
             /**
