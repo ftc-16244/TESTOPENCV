@@ -48,7 +48,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
     LiftPosition liftPosition = LiftPosition.DOWN;
 
     Barcode barcode = Barcode.RIGHT; // Default target zone
-    
+
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
             "Ball",
