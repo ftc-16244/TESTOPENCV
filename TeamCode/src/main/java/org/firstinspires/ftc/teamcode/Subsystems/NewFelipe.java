@@ -7,20 +7,27 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
+import org.firstinspires.ftc.teamcode.Enums.PatrickState;
+
 public class NewFelipe {
 
     public DcMotor julioArm = null;
 
 
-    public static final double      JULIOARMLEFT          = 90.0;
+    public static final double      JULIOARMLEFT          = -90.0;
     public static final double      JULIOARMCENTER         = 0.0;
-    public static final double      JULIOARMRIGHT        = -90.0;
+    public static final double      JULIOARMRIGHT        = 90.0;
     public static final double      JULIOTURNSPEED       =   0.3;
-    public static final int         TICKS_PER_REV         = 500;
-    public static final int         TICKS_PER_DEGREE = TICKS_PER_REV/360;
+    public static final double      TICKS_PER_REV         = 537.7; //goBilda 312 RPM motor. Same as drivetrain for testing
+    public static final double     TICKS_PER_DEGREE = TICKS_PER_REV/360;
     ElapsedTime runtime = new ElapsedTime();
 
     LinearOpMode opmode;
+
+
+
+
 
     public NewFelipe(LinearOpMode opmode) {
         this.opmode = opmode;
@@ -35,6 +42,13 @@ public class NewFelipe {
         julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
+    }
+
+
+    public double getJulioPosition(){
+        double julioPositionLocal;
+        julioPositionLocal = julioArm.getCurrentPosition()/  TICKS_PER_DEGREE; //returns in inches
+        return  julioPositionLocal;
     }
 
 
@@ -85,6 +99,6 @@ public class NewFelipe {
             }
 
         }
-    }
+     }
     }
 

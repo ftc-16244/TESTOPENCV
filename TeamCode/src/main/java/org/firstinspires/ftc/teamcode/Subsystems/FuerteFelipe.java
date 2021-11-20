@@ -2,14 +2,10 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
-
-import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class FuerteFelipe {
 
@@ -20,19 +16,22 @@ public class FuerteFelipe {
     public DcMotor  linearActuator = null;
 
     // Need some features from the Linear Opmode to make the lift work
-
+    Telemetry telemetry;
     LinearOpMode myOpMode;
     ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
-    public static final double      linearActuatorSPEED   =   0.6; // if this is too fast you cannot reset without hitting the framwe
-    public static final int         linearActuatorDOWN        =   0;
-    public static final int         linearActuatorPARTIAL     =   4;
-    public static final int         linearActuatorUP          =   7; //Number is in inches
-
-    public static final int        TICKS_PER_LIFT_IN = 460; // determined experimentally 96 mm into inches = 3.73 = 360/3.73= 95
+    public static final double      linearActuatorSPEED         =   0.9; // if this is too fast you cannot reset without hitting the framwe
+    public static final int         linearActuatorDOWN          =   0;
+    public static final int         linearActuatorPARTIAL       =   5;
+    public static final int         linearActuatorUP            =   7; //Number is in inches
+    public static final double      linearActuatorLOAD          =  .25; //Number is in inches
+    private static final double     TICKS_PER_MOTOR_REV         =   145.1; // goBilda 1150 RPM motor
+    private static final double     ACTUATOR_DISTANCE_PER_REV   = 8/25.4; // 8mm of travel per rev converted to inches
+    public static final double      TICKS_PER_LIFT_IN           = TICKS_PER_MOTOR_REV / ACTUATOR_DISTANCE_PER_REV; // 460 and change
 
     LinearOpMode opmode;
+
 
     public FuerteFelipe(LinearOpMode opmode) {
         this.opmode = opmode;
@@ -44,6 +43,7 @@ public class FuerteFelipe {
         linearActuator.setDirection(DcMotor.Direction.FORWARD);
         linearActuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
     }
 
@@ -60,7 +60,27 @@ public class FuerteFelipe {
     public void liftLow() {
         liftToTargetHeight(linearActuatorDOWN,3);
     }
+    public void liftLoad() {liftToTargetHeight(linearActuatorLOAD,1);}
 
+    // get Juan's Position need a local variable to do this
+    public double getJuanPosition(){
+        double juanPositionLocal;
+        juanPositionLocal = linearActuator.getCurrentPosition()/ TICKS_PER_LIFT_IN; //returns in inches
+        return  juanPositionLocal;
+    }
+
+
+    public void juanMechanicalReset(){
+        linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        linearActuator.setPower(-0.6);
+        runtime.reset();
+        // opmode is not active during init so take that condition out of the while loop
+        while ((runtime.seconds() < 2.0)) {
+
+        }
+        linearActuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        linearActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
     // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
 
@@ -98,11 +118,6 @@ public class FuerteFelipe {
                 // telemetry.update();
             }
 
-            // Stop all motion after exiting the while loop
-            linearActuator.setPower(.25); // puts a low power to help hold the lift in place. There is a better way
-            //liftPosition = LiftPosition.HOLD;
-            // Turn off RUN_TO_POSITION
-            //felipe.juanLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
     }
