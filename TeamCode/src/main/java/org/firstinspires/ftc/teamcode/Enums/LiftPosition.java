@@ -5,4 +5,5 @@ public enum LiftPosition {
     PARTIAL,
     UP,
     HOLD
+
 }
