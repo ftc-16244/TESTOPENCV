@@ -33,6 +33,9 @@ import java.util.List;
 @Config
 @Autonomous(group = "Test")
 public class BlueCarouselAutoMeet2 extends LinearOpMode {
+
+    Barcode barcode = Barcode.RIGHT; // Default target zone
+
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
     Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
@@ -152,7 +155,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
             // (typically 1.78 or 16/9).
 
             // Uncomment the following line if you want to adjust the magnification and/or the aspect ratio of the input images.
-            
+
         }
 
         waitForStart();
@@ -188,7 +191,6 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                     }
                     telemetry.update();
                 }
-                barcode = Barcode.RIGHT; // goes here if no object is detected
             }
             if (tfod != null) {
                 tfod.shutdown();
