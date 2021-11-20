@@ -35,7 +35,7 @@ import java.util.List;
 public class BlueCarouselAutoMeet2 extends LinearOpMode {
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
-    FelipeDeux felipe = new FelipeDeux(this); // instantiate Felipe (the main implement)
+    Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
     CarouselTurnerThingy carousel = new CarouselTurnerThingy();
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
@@ -210,18 +210,18 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                     drive.followTrajectory(traj4);
                     drive.followTrajectory(traj5);
                     drive.followTrajectory(traj6);
+
+                    // delay to let carousel turn
+                    timer.reset();
+                    while(timer.seconds() < ducktime) drive.update();
+
+                    drive.followTrajectory(traj7);
+
                     break;
             }
         }
 
         if (isStopRequested()) return;
-
-
-        // delay to let carousel turn
-        timer.reset();
-        while(timer.seconds() < ducktime) drive.update();
-
-        drive.followTrajectory(traj7);
 
 
         Pose2d poseEstimate = drive.getPoseEstimate();
