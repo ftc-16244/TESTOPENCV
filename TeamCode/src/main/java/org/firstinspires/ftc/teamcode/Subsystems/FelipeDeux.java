@@ -136,6 +136,7 @@ public class FelipeDeux {
         // opmode is not active during init so take that condition out of the while loop
         while ((runtime.seconds() < 2.0)) {
 
+            //Time wasting loop
         }
         linearActuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
