@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
 import org.firstinspires.ftc.teamcode.Enums.PatrickState;
 import org.firstinspires.ftc.teamcode.Subsystems.CarouselTurnerThingy;
 import org.firstinspires.ftc.teamcode.Subsystems.Felipe;
+import org.firstinspires.ftc.teamcode.Subsystems.FelipeDeux;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
@@ -34,7 +35,7 @@ import java.util.List;
 public class BlueCarouselAutoMeet2 extends LinearOpMode {
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
-    Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
+    FelipeDeux felipe = new FelipeDeux(this); // instantiate Felipe (the main implement)
     CarouselTurnerThingy carousel = new CarouselTurnerThingy();
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
