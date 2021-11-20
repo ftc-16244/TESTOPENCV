@@ -34,8 +34,6 @@ import java.util.List;
 @Autonomous(group = "Test")
 public class BlueCarouselAutoMeet2 extends LinearOpMode {
 
-    Barcode barcode = Barcode.RIGHT; // Default target zone
-
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
     Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
@@ -49,7 +47,8 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
     PatrickState patrickState = PatrickState.OFF;
     LiftPosition liftPosition = LiftPosition.DOWN;
 
-    Barcode barcode;
+    Barcode barcode = Barcode.RIGHT; // Default target zone
+    
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
             "Ball",
