@@ -32,39 +32,25 @@ public class NewFelipeTest extends LinearOpMode {
     FuerteFelipe fuerteFelipe = new FuerteFelipe(this);
     ElapsedTime runtime = new ElapsedTime();
 
-
+    LiftPosition liftPosition = LiftPosition.DOWN;
 
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // this has to be here inside the runopmode. The others go above as class variables
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // this has to be here inside the runopmode. The others go above as class variables
+        //drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // initialize the other subsystems
         felipe.init(hardwareMap);
         fuerteFelipe.init(hardwareMap);
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // WAIT FOR MATCH TO START
         ///////////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
-
+        fuerteFelipe.liftLoad();
         while (!isStopRequested()) {
-            drive.setWeightedDrivePower(
-                    new Pose2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x,
-                            -gamepad1.right_stick_x
-                    )
-            );
-
-            drive.update();
-
-            Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.update();
 
             // Gampepad 1 Functions
 
@@ -135,7 +121,7 @@ public class NewFelipeTest extends LinearOpMode {
                 fuerteFelipe.liftPartial();
             }
             if (gamepad1.dpad_down) {//this one works
-                fuerteFelipe.liftLow();
+                fuerteFelipe.liftLoad();
 
             }
             /**
