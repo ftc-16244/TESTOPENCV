@@ -161,6 +161,11 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
 
         tfTime.reset(); //  reset the TF timer
         if (opModeIsActive()) {
+            // Note the while loop below stays in the loop "forever" because there is no way to escape it.
+            // change the argument to something like this  "while (opModeIsActive() && ftTime.seconds() < tfAllowedTime)"
+            // that way you give tf a second or possibly 2 seconds to find the duck then move on with the rest of the code.
+            // the sample opmode this came from only did tensor flow and it had to stay active all the time so you can see how it works. We have
+            // to change that part when we put into an autonomous opmode that does other functions.
             while (opModeIsActive()) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
