@@ -14,10 +14,12 @@ public class FelipeDeux {
 
     ///private ElapsedTime     runtime = new ElapsedTime();
 
-    public DcMotor  linearActuator = null;
-    public DcMotor  patrickIntake = null; // no longer used
-    public DcMotor julioArm = null; // new
-    public Servo    homieBox = null;
+    public DcMotor  linearActuator   = null;
+    public DcMotor  patrickIntake    = null; // no longer used
+    public DcMotor  julioArm         = null; // new
+    public Servo    homieBox         = null;
+    public Servo    cristianoCado    = null; //arm
+    public Servo    panchoPulgar     = null; //thumb
 
     // Need some features from the Linear Opmode to make the lift work
 
