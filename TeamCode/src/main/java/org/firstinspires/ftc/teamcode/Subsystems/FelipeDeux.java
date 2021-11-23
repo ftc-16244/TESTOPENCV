@@ -36,11 +36,11 @@ public class FelipeDeux {
     public static final double      TICKS_PER_LIFT_IN           = TICKS_PER_MOTOR_REV / ACTUATOR_DISTANCE_PER_REV; // 460 and change
 
 
-    //public static final double      linearActuatorSPEED         =   0.9; // if this is too fast you cannot reset without hitting the framwe
-    //public static final int         linearActuatorDOWN          =   0;
-    //public static final int         linearActuatorPARTIAL       =   5;
-    //public static final int         linearActuatorUP            =   7; //Number is in inches
-    //public static final double      linearActuatorLOAD          =  .25; //Number is in inches
+    public static final double      linearActuatorSPEED         =   0.9; // if this is too fast you cannot reset without hitting the framwe
+    public static final int         linearActuatorDOWN          =   0;
+    public static final int         linearActuatorPARTIAL       =   5;
+    public static final int         linearActuatorUP            =   7; //Number is in inches
+    public static final double      linearActuatorLOAD          =  .25; //Number is in inches
 
 
 

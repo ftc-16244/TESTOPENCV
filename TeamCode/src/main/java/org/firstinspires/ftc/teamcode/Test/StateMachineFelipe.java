@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.JulioPosition;
 import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
-import org.firstinspires.ftc.teamcode.Subsystems.FuerteFelipe;
-import org.firstinspires.ftc.teamcode.Subsystems.NewFelipe;
+import org.firstinspires.ftc.teamcode.Subsystems.FelipeDeux;
+
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal
@@ -21,30 +21,28 @@ import org.firstinspires.ftc.teamcode.Subsystems.NewFelipe;
 //@Disabled
 public class StateMachineFelipe extends LinearOpMode {
 
-    NewFelipe felipe = new NewFelipe(this);
-    FuerteFelipe fuerteFelipe = new FuerteFelipe(this);
+    FelipeDeux felipe = new FelipeDeux(this);
     ElapsedTime runtime = new ElapsedTime();
     LiftPosition liftPosition = LiftPosition.DOWN; // states for Juan the lift
     JulioPosition julioPosition = JulioPosition.CENTER; // states for Julio the Arm
 
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // initialize the other subsystems
+        // initialize subsystems
         felipe.init(hardwareMap);
-        fuerteFelipe.init(hardwareMap);
         // need to get out of Encoder Mode for this to work. Maybe put this in the function?
-        fuerteFelipe.linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        felipe.linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        fuerteFelipe.juanMechanicalReset();
+        felipe.juanMechanicalReset();
 
        ////////////////////////////////////////////////////////////////////////////////////////////
         // WAIT FOR MATCH TO START
         ///////////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
-        fuerteFelipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
+
+        felipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
 
         while (!isStopRequested()) {
 
@@ -88,7 +86,7 @@ public class StateMachineFelipe extends LinearOpMode {
                 julioPosition = JulioPosition.CENTER;
                 telemetry.addData("Lift State",  liftPosition);
                 telemetry.addData("Arm State",  julioPosition);
-                fuerteFelipe.liftRise();
+                felipe.liftRise();
             }
             if (gamepad1.dpad_right) {
                 liftPosition = LiftPosition.PARTIAL;
@@ -99,24 +97,24 @@ public class StateMachineFelipe extends LinearOpMode {
             if (gamepad1.dpad_left) {
                 liftPosition = LiftPosition.PARTIAL;
                 julioPosition = JulioPosition.LEFT90;
-                fuerteFelipe.getJuanPosition();
+                felipe.getJuanPosition();
                 telemetry.addData("Lift State",  liftPosition);
                 telemetry.addData("Arm State",  julioPosition);
-                telemetry.addData("Juan Start Position",  fuerteFelipe.getJuanPosition());
+                telemetry.addData("Juan Start Position",  felipe.getJuanPosition());
                 telemetry.update();
-                fuerteFelipe.liftPartial();
+                felipe.liftPartial();
                 felipe.julioLeft90();
             }
             if (gamepad1.dpad_down) {//this one works
                 liftPosition = LiftPosition.DOWN;
                 julioPosition = JulioPosition.CENTER;
-                fuerteFelipe.getJuanPosition();
+                felipe.getJuanPosition();
                 telemetry.addData("Lift State",  liftPosition);
                 telemetry.addData("Arm State",  julioPosition);
-                telemetry.addData("Juan Start Position",  fuerteFelipe.getJuanPosition());
+                telemetry.addData("Juan Start Position", felipe.getJuanPosition());
                 telemetry.update();
                 felipe.julioCenter();
-                fuerteFelipe.liftLoad();
+                felipe.liftLoad();
 
             }
             // STATE HANDLING to ALLOW FOR SILMULTANEOUS MOTIONS
@@ -124,21 +122,21 @@ public class StateMachineFelipe extends LinearOpMode {
                 telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
                 // this is messy just make a function to call instead
                 //this sets the target when the button is pressed as the new STATE is set
-                fuerteFelipe.linearActuator.setTargetPosition( (int)(fuerteFelipe. linearActuatorPARTIAL *  fuerteFelipe.TICKS_PER_LIFT_IN));
+                felipe.linearActuator.setTargetPosition( (int)(felipe.linearActuatorPARTIAL *  felipe.TICKS_PER_LIFT_IN));
                 felipe.julioArm.setTargetPosition((int)(felipe. JULIOARMRIGHT  * felipe.TICKS_PER_DEGREE));
-                if( fuerteFelipe.getJuanPosition() < fuerteFelipe.linearActuatorPARTIAL ){
+                if( felipe.getJuanPosition() < felipe.linearActuatorPARTIAL ){
 
-                    fuerteFelipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    fuerteFelipe.linearActuator.setPower(Math.abs(fuerteFelipe.linearActuatorSPEED));
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.linearActuator.setPower(Math.abs(felipe.linearActuatorSPEED));
                 }
-                if( fuerteFelipe.getJuanPosition() >= fuerteFelipe.linearActuatorPARTIAL ){
+                if( felipe.getJuanPosition() >= felipe.linearActuatorPARTIAL ){
 
                     felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
                 }
 
                 telemetry.addData("Lift State",  liftPosition);
-                telemetry.addData("Lift Position (inches)", fuerteFelipe.getJuanPosition());
+                telemetry.addData("Lift Position (inches)", felipe.getJuanPosition());
                 telemetry.update();
 
 
@@ -158,10 +156,7 @@ public class StateMachineFelipe extends LinearOpMode {
 
             }
 
-
-
-
-
+            
             telemetry.update();
 
         }
