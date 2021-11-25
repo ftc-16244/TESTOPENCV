@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Enums.JulioPosition;
 import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
 import org.firstinspires.ftc.teamcode.Enums.PatrickState;
 import org.firstinspires.ftc.teamcode.Subsystems.CarouselTurnerThingy;
@@ -36,7 +37,9 @@ public class TeleopMeet2 extends LinearOpMode {
     // ENUMS
     //DriveSpeedState  currDriveState;
     PatrickState patrickState = PatrickState.OFF;
-    LiftPosition liftPosition = LiftPosition.DOWN;
+    LiftPosition liftPosition = LiftPosition.UNKNOWN;
+
+    JulioPosition julioPosition = JulioPosition.CENTER; // states for Julio the Arm
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -47,11 +50,12 @@ public class TeleopMeet2 extends LinearOpMode {
         carousel.init(hardwareMap,  BLUE);
 
         felipe.juanMechanicalReset();
+        liftPosition = LiftPosition.LOAD;
         ////////////////////////////////////////////////////////////////////////////////////////////
         // WAIT FOR MATCH TO START
         ///////////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
-
+        felipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
         while (!isStopRequested()) {
             drive.setWeightedDrivePower(
                     new Pose2d(
