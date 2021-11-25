@@ -23,7 +23,7 @@ public class StateMachineFelipe extends LinearOpMode {
 
     FelipeDeux felipe = new FelipeDeux(this);
     ElapsedTime runtime = new ElapsedTime();
-    LiftPosition liftPosition = LiftPosition.DOWN; // states for Juan the lift
+    LiftPosition liftPosition = LiftPosition.UNKNOWN; // don't know where it is until initi
     JulioPosition julioPosition = JulioPosition.CENTER; // states for Julio the Arm
 
 
@@ -32,7 +32,7 @@ public class StateMachineFelipe extends LinearOpMode {
 
         // initialize subsystems
         felipe.init(hardwareMap);
-        felipe.linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // felipe.linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); redundant code
         felipe.juanMechanicalReset();
 
         waitForStart();
@@ -70,12 +70,12 @@ public class StateMachineFelipe extends LinearOpMode {
 
             //reset function, if dpad down is pressed sets the state of lift and julio to down and center
             if (gamepad1.dpad_down) {//this one works
-                liftPosition = LiftPosition.DOWN;
+                liftPosition = LiftPosition.LOAD;
                 julioPosition = JulioPosition.CENTER;
             }
 
             //if the dpad down is pressed, the code below gets executed
-            if  (liftPosition == LiftPosition.DOWN && julioPosition == JulioPosition.CENTER) {// where we need to go
+            if  (liftPosition == LiftPosition.LOAD && julioPosition == JulioPosition.CENTER) {// where we need to go
                 telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
 
                 //this sets the target when the button is pressed as the new STATE is set
