@@ -58,7 +58,7 @@ public class StateMachineFelipe extends LinearOpMode {
             }
 
             if (gamepad1.b) {
-
+                felipe.thumbOpen();
             }
 
 
