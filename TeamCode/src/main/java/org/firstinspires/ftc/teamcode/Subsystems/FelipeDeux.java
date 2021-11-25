@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
+
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 public class FelipeDeux {
@@ -68,7 +70,7 @@ public class FelipeDeux {
     public static final double      JULIOARMCENTER          =   0.0;
     public static final double      JULIOARMRIGHT           =   90.0;
     public static final double      JULIOTURNSPEED          =   0.3;
-    public static final double      TICKS_PER_REV           =   537.7; //goBilda 312 RPM motor. Same as drivetrain for testing
+    public static final double      TICKS_PER_REV           =   1425.1; // 117 RPM motor 50.9:1 reduction
     public static final double      TICKS_PER_DEGREE         =  TICKS_PER_REV/360;
 
     //Constants for robot home box
@@ -81,6 +83,9 @@ public class FelipeDeux {
     public static final double      PATRICKINTAKESLOW = .3;//use this while lifting juan
     public static final double      PATRIKINTAKECOFF = 0;
     public static final double      PATRICKINTAKEON = 0.7;
+
+
+    LiftPosition liftPosition = LiftPosition.UNKNOWN;
 
 
     LinearOpMode opmode;
@@ -127,7 +132,7 @@ public class FelipeDeux {
 
     //Juan the lift's methods
 
-    //Juan the lift's methods
+    //Juan the lift's methods (these use the while loop so be casrefull)
     public void liftRise() {
         liftToTargetHeight(JUANLIFTUP ,3);
     }
@@ -137,7 +142,12 @@ public class FelipeDeux {
     public void liftLow() {
         liftToTargetHeight( JUANLIFTLOAD   ,3);
     }
-    public void liftLoad() {liftToTargetHeight(JUANLIFTLOAD,1);}
+
+    // use this method to get Juan at the correct height after a mechanical reset
+    public void liftLoad() {
+        liftToTargetHeight(JUANLIFTLOAD,1);
+        liftPosition = LiftPosition.LOAD; // set state accordingly after this is done
+    }
 
     // get Juan's Position need a local variable to do this
     public double getJuanPosition(){
@@ -148,7 +158,7 @@ public class FelipeDeux {
 
 
     public void juanMechanicalReset(){
-        linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); // need to swich off encoder to run with a timer
         linearActuator.setPower(-0.6);
         runtime.reset();
         // opmode is not active during init so take that condition out of the while loop
@@ -156,8 +166,11 @@ public class FelipeDeux {
 
             //Time wasting loop
         }
+        // set everything back the way is was before reset so encoders can be used
         linearActuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftPosition = LiftPosition.MECH_RESET;
+
     }
 
     // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
