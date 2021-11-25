@@ -36,7 +36,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
 
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
-    Felipe felipe = new Felipe(this); // instantiate Felipe (the main implement)
+    FelipeDeux felipe = new FelipeDeux(this); // instantiate Felipe (the main implement)
     CarouselTurnerThingy carousel = new CarouselTurnerThingy();
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
@@ -102,34 +102,22 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         // Trajectories Here
         ///////////////////////////////////////////////////////////////////////////
         Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
-                .forward(15)
-                .addTemporalMarker(-1,()->{felipe.highGoalLeft();})
+                .lineToLinearHeading(new Pose2d(36,3,Math.toRadians(-180)))
+                .addTemporalMarker(-2,()->{felipe.armMid();})
+                .addTemporalMarker(-2,()->{felipe.liftRise();})
                 .build();
 
-        Trajectory  traj2 = drive.trajectoryBuilder(traj1.end().plus(new Pose2d(0,0,Math.toRadians(-90))))
-                .back(18)
-                .build();
-        Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
-                .strafeLeft(9.5)
-                .addTemporalMarker(-0.5,()->{felipe.homieRight();})
-                .build();
-        // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
-        Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
-                .strafeRight(8)
-                .addDisplacementMarker(()->{felipe.reset();})
-                .build();
-
-        Trajectory  traj5 = drive.trajectoryBuilder(traj4.end())
-                // Stright line with rotation to get close to carousel
-                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-180)))
+        Trajectory  traj2 = drive.trajectoryBuilder(traj1.end())
+                .addTemporalMarker(-2,()->{felipe.thumbOpen();})
+                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-90)))
 
                 .build();
-        Trajectory  traj6 = drive.trajectoryBuilder(traj5.end())
+        Trajectory  traj3 = drive.trajectoryBuilder(traj2.end())
                 // final touch up to engage carousel
                 .forward(5)
                 .addTemporalMarker(.25,()->{carousel.carouselTurnCCW();})
                 .build();
-        Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
+        Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
                 .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(-180)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
@@ -146,27 +134,18 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         if (tfod != null) {
             tfod.activate();
 
-            // The TensorFlow software will scale the input images from the camera to a lower resolution.
-            // This can result in lower detection accuracy at longer distances (> 55cm or 22").
-            // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
-            // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
-            // should be set to the value of the images used to create the TensorFlow Object Detection model
-            // (typically 1.78 or 16/9).
-
-            // Uncomment the following line if you want to adjust the magnification and/or the aspect ratio of the input images.
-
         }
 
         waitForStart();
 
         tfTime.reset(); //  reset the TF timer
-        if (opModeIsActive()) {
+       // if (opModeIsActive()) {
             // Note the while loop below stays in the loop "forever" because there is no way to escape it.
             // change the argument to something like this  "while (opModeIsActive() && ftTime.seconds() < tfAllowedTime)"
             // that way you give tf a second or possibly 2 seconds to find the duck then move on with the rest of the code.
             // the sample opmode this came from only did tensor flow and it had to stay active all the time so you can see how it works. We have
             // to change that part when we put into an autonomous opmode that does other functions.
-            while (opModeIsActive()) {
+            while (opModeIsActive() && tfTime.seconds() < 2) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
@@ -195,7 +174,9 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                     }
                     telemetry.update();
                 }
+
             }
+            telemetry.addData("highgoal", barcode);
             if (tfod != null) {
                 tfod.shutdown();
             }
@@ -210,22 +191,18 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                     break;
                 case RIGHT: //level 3 highest goal
                     drive.followTrajectory(traj1);
-                    drive.turn(Math.toRadians(-90));
                     drive.followTrajectory(traj2);
                     drive.followTrajectory(traj3);
-                    drive.followTrajectory(traj4);
-                    drive.followTrajectory(traj5);
-                    drive.followTrajectory(traj6);
 
                     // delay to let carousel turn
                     timer.reset();
                     while(timer.seconds() < ducktime) drive.update();
 
-                    drive.followTrajectory(traj7);
+                    drive.followTrajectory(traj4);
 
                     break;
             }
-        }
+        //}
 
         if (isStopRequested()) return;
 
