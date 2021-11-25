@@ -18,7 +18,7 @@ public class FelipeDeux {
     public DcMotor  patrickIntake    = null; // no longer used
     public DcMotor  julioArm         = null; // new
     public Servo    homieBox         = null;
-    public Servo    cristianoCado    = null; //arm
+    public Servo    cristianoCodo    = null; //arm
     public Servo    panchoPulgar     = null; //thumb
 
     // Need some features from the Linear Opmode to make the lift work
@@ -43,6 +43,15 @@ public class FelipeDeux {
     public static final int         linearActuatorPARTIAL       =   5;
     public static final int         linearActuatorUP            =   7; //Number is in inches
     public static final double      linearActuatorLOAD          =  .25; //Number is in inches
+
+
+    public static final double      CRISTIANOCODOINIT =  0.0;
+    public static final double      CRISTIANOCODOMID =  0.5;
+    public static final double      CRISTIANOCODOLOW =  0.75;
+
+    public static final double      PANCHOPULGAROPEN =  0.2;
+    public static final double      PANCHOPULGARCLOSE =  0.4;
+
 
 
 
@@ -104,6 +113,13 @@ public class FelipeDeux {
 
         // pre-position during init
         homieBox.setPosition(HOMIEBOXPIVOTCENTER);
+
+        cristianoCodo = hwMap.get(Servo.class,"arm");
+        cristianoCodo.setPosition(CRISTIANOCODOINIT);
+
+        panchoPulgar = hwMap.get(Servo.class,"thumb");
+        panchoPulgar.setPosition(PANCHOPULGARCLOSE);
+
     }
 
     //// Single operation methods - see below for methods to be called in Opmodes
@@ -190,6 +206,24 @@ public class FelipeDeux {
     public void julioCenter(){
         rotateToTargetAngle(JULIOARMCENTER  ,2);
         julioArm.setPower(Math.abs(0)); // cut power to motor when it is at the center to it can be guided into the frame
+    }
+
+    public void armInit(){
+        cristianoCodo.setPosition(CRISTIANOCODOINIT);
+    }
+
+    public void armMid(){
+        cristianoCodo.setPosition(CRISTIANOCODOMID);
+    }
+
+    public void armLow(){
+        cristianoCodo.setPosition(CRISTIANOCODOLOW);
+    }
+    public void thumbOpen(){
+        panchoPulgar.setPosition((PANCHOPULGAROPEN));
+    }
+    public void thumbClose(){
+        panchoPulgar.setPosition((PANCHOPULGARCLOSE));
     }
 
     public void rotateToTargetAngle(double angle, double timeoutS){
