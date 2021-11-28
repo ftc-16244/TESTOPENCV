@@ -35,7 +35,7 @@ public class RedCarouselAuto extends LinearOpMode {
     // ENUMS
     //DriveSpeedState  currDriveState;
     PatrickState patrickState = PatrickState.OFF;
-    LiftPosition liftPosition = LiftPosition.DOWN;
+    LiftPosition liftPosition = LiftPosition.LOAD;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());

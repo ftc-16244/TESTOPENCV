@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Enums.Barcode;
+import org.firstinspires.ftc.teamcode.Enums.GameElement;
 import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
 import org.firstinspires.ftc.teamcode.Enums.PatrickState;
 import org.firstinspires.ftc.teamcode.Subsystems.CarouselTurnerThingy;
@@ -45,9 +46,10 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
     // ENUMS
     //DriveSpeedState  currDriveState;
     PatrickState patrickState = PatrickState.OFF;
-    LiftPosition liftPosition = LiftPosition.DOWN;
+    LiftPosition liftPosition = LiftPosition.LOAD;
 
     Barcode barcode = Barcode.RIGHT; // Default target zone
+    GameElement gameElement = GameElement.BALL; //set to Ball since this is impossible
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
@@ -97,19 +99,22 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         // initialize the other subsystems
         felipe.init(hardwareMap);
         carousel.init(hardwareMap, BLUE);
+        felipe.juanMechanicalReset();
 
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories Here
         ///////////////////////////////////////////////////////////////////////////
         Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(36,3,Math.toRadians(-180)))
-                .addTemporalMarker(-2,()->{felipe.armMid();})
-                .addTemporalMarker(-2,()->{felipe.liftRise();})
+                .lineToLinearHeading(new Pose2d(41,3,Math.toRadians(179)))
+                .addTemporalMarker(-.25,()->{felipe.armMid();})
+                //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
 
         Trajectory  traj2 = drive.trajectoryBuilder(traj1.end())
-                .addTemporalMarker(-2,()->{felipe.thumbOpen();})
-                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-90)))
+                .addTemporalMarker(-0.5,()->{felipe.thumbOpen();})
+                .addTemporalMarker(.1,()->{felipe.thumbClose();})
+                .addTemporalMarker(.5,()->{felipe.armInit();})
+                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-180)))
 
                 .build();
         Trajectory  traj3 = drive.trajectoryBuilder(traj2.end())
@@ -119,7 +124,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(90)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
 
@@ -137,7 +142,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         }
 
         waitForStart();
-
+        felipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
         tfTime.reset(); //  reset the TF timer
        // if (opModeIsActive()) {
             // Note the while loop below stays in the loop "forever" because there is no way to escape it.
@@ -156,13 +161,17 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                         int i = 0;
                         for (Recognition recognition : updatedRecognitions) {
                             telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                            if (recognition.getLabel()=="Duck"){
+                                gameElement = GameElement.DUCK;
+                            }
+
                             telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
-                            if ( recognition.getLeft() >25 &&  recognition.getLeft() < 250){
+                            if ( recognition.getLeft() >25 &&  recognition.getLeft() < 250 && gameElement == GameElement.DUCK){
                                 barcode = Barcode.LEFT;}
-                            else if (recognition.getLeft() >300 &&  recognition.getLeft() < 600){
+                            else if (recognition.getLeft() >300 &&  recognition.getLeft() < 600 && gameElement == GameElement.DUCK){
                                 barcode = Barcode.CENTER;
                             }
                             i++;
@@ -190,11 +199,13 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
 
                     break;
                 case RIGHT: //level 3 highest goal
+                    felipe.liftRise();
                     drive.followTrajectory(traj1);
                     drive.followTrajectory(traj2);
+                    felipe.liftLoad();
                     drive.followTrajectory(traj3);
 
-                    // delay to let carousel turn
+                    //delay to let carousel turn
                     timer.reset();
                     while(timer.seconds() < ducktime) drive.update();
 
