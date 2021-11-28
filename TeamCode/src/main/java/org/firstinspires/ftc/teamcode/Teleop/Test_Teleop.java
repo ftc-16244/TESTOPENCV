@@ -84,7 +84,7 @@ public class Test_Teleop extends LinearOpMode {
 
             }
             if (gamepad1.y){
-                liftstate = LiftPosition.DOWN;
+                liftstate = LiftPosition.LOAD;
             }
 
 

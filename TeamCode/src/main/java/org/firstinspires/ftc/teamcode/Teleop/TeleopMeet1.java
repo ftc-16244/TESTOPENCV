@@ -36,7 +36,7 @@ public class TeleopMeet1 extends LinearOpMode {
     // ENUMS
     //DriveSpeedState  currDriveState;
     PatrickState patrickState = PatrickState.OFF;
-    LiftPosition liftPosition = LiftPosition.DOWN;
+    LiftPosition liftPosition = LiftPosition.LOAD;
 
     @Override
     public void runOpMode() throws InterruptedException {
