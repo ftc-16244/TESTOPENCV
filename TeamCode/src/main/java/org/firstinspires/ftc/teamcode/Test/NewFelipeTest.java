@@ -32,7 +32,7 @@ public class NewFelipeTest extends LinearOpMode {
     FuerteFelipe fuerteFelipe = new FuerteFelipe(this);
     ElapsedTime runtime = new ElapsedTime();
 
-    LiftPosition liftPosition = LiftPosition.DOWN;
+    LiftPosition liftPosition = LiftPosition.LOAD;
 
 
 

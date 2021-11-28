@@ -38,7 +38,7 @@ public class FelipeTest extends LinearOpMode {
     // ENUMS
     //DriveSpeedState  currDriveState;
     PatrickState patrickState = PatrickState.OFF;
-    LiftPosition liftPosition = LiftPosition.DOWN;
+    LiftPosition liftPosition = LiftPosition.LOAD;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -91,7 +91,7 @@ public class FelipeTest extends LinearOpMode {
             }
 
             if (gamepad1.a) {
-                liftPosition = LiftPosition.DOWN;
+                liftPosition = LiftPosition.LOAD;
                 felipe.liftToTargetHeight(felipe.JUANLIFTDOWN,10);
                 telemetry.addData("Lift Reset", "Complete ");
             }
