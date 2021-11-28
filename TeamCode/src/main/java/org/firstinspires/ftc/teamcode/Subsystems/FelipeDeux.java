@@ -33,8 +33,8 @@ public class FelipeDeux {
     //public static final int       JUANLIFTDOWN        =   0;
     public static final double      JUANLIFTPARTIAL     =   4.75;
     public static final int         JUANLIFTLOW         =   2;
-    public static final double      JUANLIFTUP          =   7.5; //Number is in inches
-    public static final double      JUANLIFTLOAD        =   0.25; //Number is in inches
+    public static final double      JUANLIFTUP          =   7.0; //Number is in inches
+    public static final double      JUANLIFTLOAD        =   0.75; //Number is in inches
     private static final double     TICKS_PER_MOTOR_REV         =   145.1; // goBilda 1150 RPM motor
     private static final double     ACTUATOR_DISTANCE_PER_REV   = 8/25.4; // 8mm of travel per rev converted to inches
     public static final double      TICKS_PER_LIFT_IN           = TICKS_PER_MOTOR_REV / ACTUATOR_DISTANCE_PER_REV; // 460 and change
@@ -44,15 +44,15 @@ public class FelipeDeux {
     public static final int         linearActuatorDOWN          =   0;
     public static final int         linearActuatorPARTIAL       =   5;
     public static final int         linearActuatorUP            =   7; //Number is in inches
-    public static final double      linearActuatorLOAD          =  .25; //Number is in inches
+    public static final double      linearActuatorLOAD          =  .75; //Number is in inches
 
 
-    public static final double      CRISTIANOCODOINIT =  0.0;
+    public static final double      CRISTIANOCODOINIT =  0.18;
     public static final double      CRISTIANOCODOMID =  0.5;
-    public static final double      CRISTIANOCODOLOW =  0.75;
+    public static final double      CRISTIANOCODOLOW =  0.6;
 
     public static final double      PANCHOPULGAROPEN =  0.2;
-    public static final double      PANCHOPULGARCLOSE =  0.4;
+    public static final double      PANCHOPULGARCLOSE =  0.525;
 
 
 
