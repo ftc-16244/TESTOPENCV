@@ -14,7 +14,6 @@ public class FelipeDeux {
 
     //Define Hardware Objects
 
-    ///private ElapsedTime     runtime = new ElapsedTime();
 
     public DcMotor  linearActuator   = null;
     public DcMotor  patrickIntake    = null; // no longer used
@@ -29,22 +28,22 @@ public class FelipeDeux {
     ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
-    public static final double      JUANLIFTSPEED       =   0.6; // if this is too fast you cannot reset without hitting the framwe
-    //public static final int       JUANLIFTDOWN        =   0;
-    public static final double      JUANLIFTPARTIAL     =   4.75;
-    public static final int         JUANLIFTLOW         =   2;
-    public static final double      JUANLIFTUP          =   7.0; //Number is in inches
-    public static final double      JUANLIFTLOAD        =   0.75; //Number is in inches
+    public static final double      JUANLIFTSPEED               =   1.0; // if this is too fast you cannot reset without hitting the framwe
+    //public static final int       JUANLIFTDOWN                =   0; // use the LOAD instead of down. Zero pushes wheels off the mat
+    public static final double      JUANLIFTPARTIAL             =   5.0;
+    public static final int         JUANLIFTLOW                 =   2;
+    public static final double      JUANLIFTUP                  =   7.0; //Number is in inches
+    public static final double      JUANLIFTLOAD                =   0.5; //Number is in inches
     private static final double     TICKS_PER_MOTOR_REV         =   145.1; // goBilda 1150 RPM motor
     private static final double     ACTUATOR_DISTANCE_PER_REV   = 8/25.4; // 8mm of travel per rev converted to inches
     public static final double      TICKS_PER_LIFT_IN           = TICKS_PER_MOTOR_REV / ACTUATOR_DISTANCE_PER_REV; // 460 and change
 
 
-    public static final double      linearActuatorSPEED         =   0.9; // if this is too fast you cannot reset without hitting the framwe
-    public static final int         linearActuatorDOWN          =   0;
-    public static final int         linearActuatorPARTIAL       =   5;
-    public static final int         linearActuatorUP            =   7; //Number is in inches
-    public static final double      linearActuatorLOAD          =  .75; //Number is in inches
+    //public static final double      linearActuatorSPEED         =   0.9; // if this is too fast you cannot reset without hitting the framwe
+    //public static final int         linearActuatorDOWN          =   0;
+    //public static final int         linearActuatorPARTIAL       =   5;
+    //public static final int         linearActuatorUP            =   7; //Number is in inches
+    //public static final double      linearActuatorLOAD          =  .75; //Number is in inches
 
 
     public static final double      CRISTIANOCODOINIT =  0.18;
@@ -63,13 +62,13 @@ public class FelipeDeux {
     //public static final double      JULIOPIVOTLEFT          = 0.1;
     //public static final double      JULIOPIVOTRIGHT         = 0.8;
     //public static final double      JULIOPIVOTCENTER        = 0.445;
-    public static final double      JULIODELAY              = 0.5;
+    //public static final double          JULIODELAY              = 0.5;
 
     //Constants for new motor version of Julio
     public static final double      JULIOARMLEFT            =   -90.0;
     public static final double      JULIOARMCENTER          =   0.0;
     public static final double      JULIOARMRIGHT           =   90.0;
-    public static final double      JULIOTURNSPEED          =   0.3;
+    public static final double      JULIOTURNSPEED          =   0.5;
     public static final double      TICKS_PER_REV           =   1425.1; // 117 RPM motor 50.9:1 reduction
     public static final double      TICKS_PER_DEGREE         =  TICKS_PER_REV/360;
 
@@ -101,6 +100,7 @@ public class FelipeDeux {
         linearActuator.setDirection(DcMotor.Direction.FORWARD);
         linearActuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         //Initialize Patrick which is the intake drive motor
         patrickIntake = hwMap.get(DcMotor.class,"patrickIntake");
         patrickIntake.setDirection(DcMotor.Direction.FORWARD);
@@ -127,23 +127,14 @@ public class FelipeDeux {
 
     }
 
-    //// Single operation methods - see below for methods to be called in Opmodes
+       //Juan the lift's methods -  while loop type (use during Auto)
 
-
-    //Juan the lift's methods
-
-    //Juan the lift's methods (these use the while loop so be casrefull)
     public void liftRise() {
         liftToTargetHeight(JUANLIFTUP ,3);
     }
     public void liftPartial() {
         liftToTargetHeight(JUANLIFTPARTIAL ,3);
     }
-    public void liftLow() {
-        liftToTargetHeight( JUANLIFTLOAD   ,3);
-    }
-
-    // use this method to get Juan at the correct height after a mechanical reset
     public void liftLoad() {
         liftToTargetHeight(JUANLIFTLOAD,1);
         liftPosition = LiftPosition.LOAD; // set state accordingly after this is done
@@ -156,6 +147,17 @@ public class FelipeDeux {
         return  juanPositionLocal;
     }
 
+    public void setJuanToLoad(){
+        linearActuator.setTargetPosition( (int)(JUANLIFTLOAD *  TICKS_PER_LIFT_IN));
+
+    }
+
+    public void setJuanToPartial(){
+        linearActuator.setTargetPosition( (int)(JUANLIFTPARTIAL *  TICKS_PER_LIFT_IN));
+
+    }
+
+    // Juan mechanical reset use in all opmodes Telop and Auto to reset the encoders
 
     public void juanMechanicalReset(){
         linearActuator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); // need to swich off encoder to run with a timer
@@ -169,13 +171,48 @@ public class FelipeDeux {
         // set everything back the way is was before reset so encoders can be used
         linearActuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftPosition = LiftPosition.MECH_RESET;
+        liftPosition = LiftPosition.MECH_RESET; // we know the lift is at zero here.
 
     }
 
-    // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
+
+    //Julio the arm's methods
+    public double getJulioPosition(){
+        double julioPositionLocal;
+        julioPositionLocal = julioArm.getCurrentPosition()/  TICKS_PER_DEGREE; //returns in degrees
+        return  julioPositionLocal;
+    }
 
 
+    public void setJulioToZero(){
+        julioArm.setTargetPosition(0);
+
+    }
+
+    public void setJulioTo90Right(){
+        julioArm.setTargetPosition( (int)(JULIOARMRIGHT *  TICKS_PER_DEGREE));
+
+    }
+
+    public void setJulioTo90Left(){
+        julioArm.setTargetPosition( (int)(JULIOARMLEFT *  TICKS_PER_DEGREE));
+
+    }
+
+    public void julioLeft90(){
+        rotateToTargetAngle(JULIOARMLEFT,2);
+    }
+
+    public void julioRight90(){
+        rotateToTargetAngle(JULIOARMRIGHT  ,2);
+    }
+
+    public void julioCenter(){
+        rotateToTargetAngle(JULIOARMCENTER  ,2);
+        julioArm.setPower(Math.abs(0)); // cut power to motor when it is at the center to it can be guided into the frame
+    }
+
+    // Intake and Homie box methods used in teleop and auto they are simple
 
     //Patrick the intake's methods
     public void intakeOff() {
@@ -199,28 +236,8 @@ public class FelipeDeux {
         homieBox.setPosition(HOMIEBOXPIVOTCENTER);
     }
 
-
-    //Julio the arm's methods
-    public double getJulioPosition(){
-        double julioPositionLocal;
-        julioPositionLocal = julioArm.getCurrentPosition()/  TICKS_PER_DEGREE; //returns in inches
-        return  julioPositionLocal;
-    }
-
-
-    public void julioLeft90(){
-        rotateToTargetAngle(JULIOARMLEFT,2);
-    }
-
-    public void julioRight90(){
-        rotateToTargetAngle(JULIOARMRIGHT  ,2);
-    }
-
-    public void julioCenter(){
-        rotateToTargetAngle(JULIOARMCENTER  ,2);
-        julioArm.setPower(Math.abs(0)); // cut power to motor when it is at the center to it can be guided into the frame
-    }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Auto Only for dropping the preloaded box - no Teleop controls necessary (except in a test file)
     public void armInit(){
         cristianoCodo.setPosition(CRISTIANOCODOINIT);
     }
@@ -238,7 +255,8 @@ public class FelipeDeux {
     public void thumbClose(){
         panchoPulgar.setPosition((PANCHOPULGARCLOSE));
     }
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // While loop methods for the arm and lift - DO NOT USE IN TELEOP or Driving will be imparred
     public void rotateToTargetAngle(double angle, double timeoutS){
 
         int newTargetAngle; // ok to leave an an int unless we want really fine tuning
@@ -273,65 +291,6 @@ public class FelipeDeux {
             }
 
         }
-    }
-
-
-    public void reset() {
-        intakeOff();
-        //liftPartial(); this one will not work becasue there is no while loop to let the motor compplete ite rotations
-        liftToTargetHeight(JUANLIFTPARTIAL, 3);
-        homieCenter();
-        runtime.reset();
-
-        julioCenter();
-        liftToTargetHeight(JUANLIFTLOAD, 3);
-    }
-
-    // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
-    public void highGoalLeft() {
-        //reset(); you will need to manually reset for noe. it messes up the flow
-        //intakeOn();
-        liftToTargetHeight(JUANLIFTPARTIAL, 3);
-        intakeOff();
-        homieLeft();
-
-        julioLeft90();
-        //homieRight(); need to wait to drop the cargo if you leave it her it drops immediatley
-
-    }
-
-    // high goal is for the alliance hub so need LH and RH. The shared hub is only a low goal
-    public void highGoalRight() {
-        //reset(); you will need to manually reset for noe. it messes up the flow
-        //intakeOn();
-        liftToTargetHeight(JUANLIFTPARTIAL, 3);
-        intakeOff();
-        homieRight();
-        julioRight90();
-        //homieRight(); need to wait to drop the cargo if you leave it her it drops immediatley
-
-    }
-    // need LH and RH here too depending on which side yoy are approaching from
-    // blue you need to swing to the left, red swing to th right
-    public void sharedHubBlue() {
-        reset();
-
-        //intakeOn();
-        liftToTargetHeight(JUANLIFTLOW, 3);
-        intakeOff();
-        homieRight();
-        julioRight90();
-
-
-    }
-
-    public void sharedHubRed() {
-        reset();
-        //intakeOn();
-        liftToTargetHeight(JUANLIFTLOW, 3);
-        intakeOff();
-        homieLeft();
-        julioLeft90();
     }
 
     public void liftToTargetHeight(double height, double timeoutS){
@@ -369,6 +328,7 @@ public class FelipeDeux {
 
         }
     }
+
 
 
 }
