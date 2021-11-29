@@ -125,7 +125,7 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(29,27,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(39,25,Math.toRadians(90)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
         Trajectory  traj5 = drive.trajectoryBuilder(new Pose2d())
