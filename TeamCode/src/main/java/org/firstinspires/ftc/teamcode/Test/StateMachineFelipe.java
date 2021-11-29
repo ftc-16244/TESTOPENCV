@@ -81,7 +81,7 @@ public class StateMachineFelipe extends LinearOpMode {
                 //this sets the target when the button is pressed as the new STATE is set
                 felipe.linearActuator.setTargetPosition( (int)(felipe.linearActuatorDOWN *  felipe.TICKS_PER_LIFT_IN));
                 felipe.julioArm.setTargetPosition((int)(felipe. JULIOARMCENTER  * felipe.TICKS_PER_DEGREE));
-                if( felipe.getJuanPosition() < felipe.linearActuatorDOWN ){
+                if(felipe.getJuanPosition() < felipe.linearActuatorDOWN){
 
                     felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     felipe.linearActuator.setPower(Math.abs(felipe.linearActuatorSPEED));
@@ -137,6 +137,8 @@ public class StateMachineFelipe extends LinearOpMode {
                 telemetry.addData("Lift Position (inches)", felipe.getJuanPosition());
                 telemetry.update();
             }
+
+            //------------------------------------------------------------------------------------
 
             //when you press dpad left, it changes the state of lift and julio to partial and left90
             if (gamepad1.dpad_left) {
