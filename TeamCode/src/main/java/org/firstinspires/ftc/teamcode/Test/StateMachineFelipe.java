@@ -38,6 +38,8 @@ public class StateMachineFelipe extends LinearOpMode {
         waitForStart();
 
         felipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
+        felipe.armInit();
+        felipe.thumbClose();
 
         while (!isStopRequested()) {
 
@@ -50,6 +52,7 @@ public class StateMachineFelipe extends LinearOpMode {
                 }
 
             if (gamepad1.y) {
+                felipe.liftPartial();
                 felipe.julioRight90();
             }
 
@@ -70,7 +73,6 @@ public class StateMachineFelipe extends LinearOpMode {
 
             //reset function, if dpad down is pressed sets the state of lift and julio to down and center
             if (gamepad1.dpad_down) {//this one works
-                liftPosition = LiftPosition.LOAD;
                 julioPosition = JulioPosition.CENTER;
             }
 
@@ -79,15 +81,21 @@ public class StateMachineFelipe extends LinearOpMode {
                 telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
 
                 //this sets the target when the button is pressed as the new STATE is set
-                felipe.linearActuator.setTargetPosition( (int)(felipe.linearActuatorDOWN *  felipe.TICKS_PER_LIFT_IN));
+                felipe.linearActuator.setTargetPosition( (int)(felipe.linearActuatorPARTIAL *  felipe.TICKS_PER_LIFT_IN));
                 felipe.julioArm.setTargetPosition((int)(felipe. JULIOARMCENTER  * felipe.TICKS_PER_DEGREE));
+                if( felipe.getJuanPosition() < felipe.linearActuatorPARTIAL ){
+
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.linearActuator.setPower(Math.abs(felipe.linearActuatorSPEED));
+                }
+                felipe.linearActuator.setTargetPosition( (int)(felipe.linearActuatorDOWN *  felipe.TICKS_PER_LIFT_IN));
                 if( felipe.getJuanPosition() < felipe.linearActuatorDOWN ){
 
                     felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     felipe.linearActuator.setPower(Math.abs(felipe.linearActuatorSPEED));
                 }
                 //only after linear actuator reaches target height does the julio start moving
-                if( felipe.getJuanPosition() >= felipe.linearActuatorDOWN ){
+                if( felipe.getJuanPosition() >= felipe.linearActuatorPARTIAL ){
 
                     felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
