@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Config
 @Autonomous(group = "Test")
-public class BlueCarouselAutoMeet2 extends LinearOpMode {
+public class RedCarouselAutoMeet2 extends LinearOpMode {
 
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
@@ -105,7 +105,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         // Trajectories Here
         ///////////////////////////////////////////////////////////////////////////
         Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(41,3,Math.toRadians(179)))
+                .lineToLinearHeading(new Pose2d(41,-3,Math.toRadians(0)))
                 .addTemporalMarker(-.25,()->{felipe.armMid();})
                 //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
@@ -114,17 +114,18 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                 .addTemporalMarker(-0.6,()->{felipe.thumbOpen();})
                 .addTemporalMarker(.1,()->{felipe.thumbClose();})
                 .addTemporalMarker(.5,()->{felipe.armInit();})
-                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(9,30,Math.toRadians(90)))
 
                 .build();
+
         Trajectory  traj3 = drive.trajectoryBuilder(traj2.end())
                 // final touch up to engage carousel
-                .forward(5)
+                .forward(1)
                 .addTemporalMarker(.25,()->{carousel.carouselTurnCCW();})
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(39,25,Math.toRadians(90)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
         Trajectory  traj5 = drive.trajectoryBuilder(new Pose2d())
@@ -168,94 +169,97 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         waitForStart();
         felipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
         tfTime.reset(); //  reset the TF timer
-       // if (opModeIsActive()) {
-            // Note the while loop below stays in the loop "forever" because there is no way to escape it.
-            // change the argument to something like this  "while (opModeIsActive() && ftTime.seconds() < tfAllowedTime)"
-            // that way you give tf a second or possibly 2 seconds to find the duck then move on with the rest of the code.
-            // the sample opmode this came from only did tensor flow and it had to stay active all the time so you can see how it works. We have
-            // to change that part when we put into an autonomous opmode that does other functions.
-            while (opModeIsActive() && tfTime.seconds() < 2) {
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        // step through the list of recognitions and display boundary info.
-                        int i = 0;
-                        for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            if (recognition.getLabel()=="Duck"){
-                                gameElement = GameElement.DUCK;
-                            }
-
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                    recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                    recognition.getRight(), recognition.getBottom());
-                            if ( recognition.getLeft() >25 &&  recognition.getLeft() < 250 && gameElement == GameElement.DUCK){
-                                barcode = Barcode.LEFT;}
-                            else if (recognition.getLeft() >300 &&  recognition.getLeft() < 600 && gameElement == GameElement.DUCK){
-                                barcode = Barcode.CENTER;
-                            }
-                            i++;
-
-
-                            telemetry.addData("Barcode with Duck",barcode);
-
-                        }
-                    }
-                    telemetry.update();
-                }
-
-            }
-            telemetry.addData("highgoal", barcode);
+        // if (opModeIsActive()) {
+        // Note the while loop below stays in the loop "forever" because there is no way to escape it.
+        // change the argument to something like this  "while (opModeIsActive() && ftTime.seconds() < tfAllowedTime)"
+        // that way you give tf a second or possibly 2 seconds to find the duck then move on with the rest of the code.
+        // the sample opmode this came from only did tensor flow and it had to stay active all the time so you can see how it works. We have
+        // to change that part when we put into an autonomous opmode that does other functions.
+        while (opModeIsActive() && tfTime.seconds() < 2) {
             if (tfod != null) {
-                tfod.shutdown();
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                if (updatedRecognitions != null) {
+                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : updatedRecognitions) {
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        if (recognition.getLabel()=="Duck"){
+                            gameElement = GameElement.DUCK;
+                        }
+
+                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getTop());
+                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getRight(), recognition.getBottom());
+                        if ( recognition.getLeft() >25 &&  recognition.getLeft() < 250 && gameElement == GameElement.DUCK){
+                            barcode = Barcode.CENTER;}
+                        else if (recognition.getLeft() >300 &&  recognition.getLeft() < 600 && gameElement == GameElement.DUCK){
+                            barcode = Barcode.RIGHT;
+                        }
+                        i++;
+
+
+                        telemetry.addData("Barcode with Duck",barcode);
+
+                    }
+                }
+                telemetry.update();
             }
 
+        }
+        telemetry.addData("highgoal", barcode);
+        if (tfod != null) {
+            tfod.shutdown();
+        }
 
-            switch(barcode){
-                case LEFT: //
-                    drive.followTrajectory(traj5);
-                    drive.followTrajectory(traj6);
-                    felipe.liftLoad();
-                    drive.followTrajectory(traj7);
 
-                    //delay to let carousel turn
-                    timer.reset();
-                    while(timer.seconds() < ducktime) drive.update();
+        switch(barcode){
+            case RIGHT: //
+                felipe.liftRise();
+                drive.followTrajectory(traj1);
+                drive.followTrajectory(traj2);
+                felipe.liftLoad();
+                drive.followTrajectory(traj3);
 
-                    drive.followTrajectory(traj8);
+                //delay to let carousel turn
+                timer.reset();
+                while(timer.seconds() < ducktime) drive.update();
 
-                    break;                case CENTER: //
-                    drive.followTrajectory(traj1);
-                    drive.followTrajectory(traj2);
-                    felipe.liftLoad();
-                    drive.followTrajectory(traj3);
+                drive.followTrajectory(traj4);
 
-                    //delay to let carousel turn
-                    timer.reset();
-                    while(timer.seconds() < ducktime) drive.update();
+                break;
+                case CENTER: //
+                drive.followTrajectory(traj1);
+                drive.followTrajectory(traj2);
+                felipe.liftLoad();
+                drive.followTrajectory(traj3);
 
-                    drive.followTrajectory(traj4);
+                //delay to let carousel turn
+                timer.reset();
+                while(timer.seconds() < ducktime) drive.update();
 
-                    break;
-                    case RIGHT: //level 3 highest goal
-                    felipe.liftRise();
-                    drive.followTrajectory(traj1);
-                    drive.followTrajectory(traj2);
-                    felipe.liftLoad();
-                    drive.followTrajectory(traj3);
+                drive.followTrajectory(traj4);
 
-                    //delay to let carousel turn
-                    timer.reset();
-                    while(timer.seconds() < ducktime) drive.update();
+                break;
+            case LEFT:
+                drive.followTrajectory(traj5);
+                drive.followTrajectory(traj6);
+                felipe.liftLoad();
+                drive.followTrajectory(traj7);
 
-                    drive.followTrajectory(traj4);
+                //delay to let carousel turn
+                timer.reset();
+                while(timer.seconds() < ducktime) drive.update();
 
-                    break;
-            }
+                drive.followTrajectory(traj8);
+
+                break;
+
+
+        }
         //}
 
         if (isStopRequested()) return;

@@ -48,14 +48,21 @@ public class TeleopMeet2 extends LinearOpMode {
         // initialize the other subsystems
         felipe.init(hardwareMap);
         carousel.init(hardwareMap,  BLUE);
-
+        felipe.armInit();
+        felipe.thumbClose();
+        // forces Juan to mechanical low stop and sets encoders to zero
         felipe.juanMechanicalReset();
+        // this just changes the state. It does not drive any action
         liftPosition = LiftPosition.LOAD;
         ////////////////////////////////////////////////////////////////////////////////////////////
         // WAIT FOR MATCH TO START
         ///////////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
-        felipe.liftLoad();// put here becase opmode is acitve is a condition in the method that does this
+        // opmode has to be active to get this method to work. So is won't work if you put it in the init part.
+        // This lifts Juan so Hommie is not on the mat.
+        felipe.liftLoad();
+        // This is the while loop that everything goes inside of.
+        // the first section controls the drive train via a roadrunner method
         while (!isStopRequested()) {
             drive.setWeightedDrivePower(
                     new Pose2d(
@@ -82,7 +89,7 @@ public class TeleopMeet2 extends LinearOpMode {
              *
              **/
             if (gamepad1.a) {
-                felipe.reset();
+                julioPosition = JulioPosition.CENTER;
                 telemetry.addData("Reset", "Complete ");
             }
 
@@ -130,26 +137,149 @@ public class TeleopMeet2 extends LinearOpMode {
 
             }
 
+            /**
+             *
+             * Gamepad #1  - Buttons       *
+             **/
+
+
+
+
+            // Carousel Functions
+            if (gamepad1.x) {
+                carousel.carouselTurnCCW();
+                telemetry.addData("Turning CCW", "Complete ");
+            }
+            if (gamepad1.b) {
+                carousel.carouselTurnCW();
+                telemetry.addData("Turning CW", "Complete ");
+            }
+            if (gamepad1.y) {
+                carousel.carouselTurnOff();
+                telemetry.addData("Turning Off", "Complete ");
+            }
+
+            if (gamepad1.a) {
+                carousel.carouselTurnOff();
+                telemetry.addData("Turning Off", "Complete ");
+            }
+
 
             /**
              *
-             * Gamepad #1 DPAD Felipe Controls
+             * Gamepad #1 DPAD Felipe Controls (setting the States)
              *
              **/
             if (gamepad1.dpad_left) {
-                felipe.highGoalLeft();
-                telemetry.addData("High Goal", "Complete ");
+                liftPosition = LiftPosition.PARTIAL;
+                julioPosition = JulioPosition.LEFT90;
+                telemetry.addData("High Goal Left", "Complete");
+                telemetry.addData("Lift State",liftPosition);
+                telemetry.addData("Arm State", julioPosition);
             }
-
             if (gamepad1.dpad_right) {
-                felipe.highGoalRight();;
-                telemetry.addData("High Goal", "Complete ");
+                liftPosition = LiftPosition.PARTIAL;
+                julioPosition = JulioPosition.RIGHT90;
+                telemetry.addData("High Goal Right","Complete");
+            }
+            if (gamepad1.dpad_down) {//this one works
+                julioPosition = JulioPosition.CENTER;
+                liftPosition = LiftPosition.LOAD;
             }
 
-            if (gamepad1.dpad_down) {
-                felipe.liftToTargetHeight(Felipe.JUANLIFTDOWN, 3);
-                telemetry.addData("lower elevator", "Complete ");
+            if (gamepad1.dpad_up) {//this one works
+                liftPosition = LiftPosition.UP;
             }
+            /////////////////////////////////////////////////////////////////////////
+            //States and Trasnitions//////////////////////////////////////////////
+            if  (liftPosition == LiftPosition.PARTIAL && julioPosition == JulioPosition.LEFT90) {// where we need to go
+                telemetry.addData("Going to Lift PARTIAL and Left 90 Degrees", "Done");
+
+                //this sets the target when the button is pressed as the new STATE is set
+
+
+
+                if( felipe.getJuanPosition() < felipe.JUANLIFTPARTIAL ){
+                    felipe.setJuanToPartial();
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.linearActuator.setPower(Math.abs(felipe.JUANLIFTSPEED ));
+                }
+                //only after linear actuator reaches target height does the julio start moving
+                if( felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL ){
+                    felipe.setJulioTo90Left();
+                    felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                }
+
+                telemetry.addData("Lift State",  liftPosition);
+                telemetry.addData("Lift Position (inches)", felipe.getJuanPosition());
+                telemetry.update();
+            }
+
+
+
+
+            //if the dpad right is pressed, the code below gets executed
+            if  (liftPosition == LiftPosition.PARTIAL && julioPosition == JulioPosition.RIGHT90) {// where we need to go
+                telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
+
+                //this sets the target when the button is pressed as the new STATE is set
+
+
+                if( felipe.getJuanPosition() < felipe.JUANLIFTPARTIAL  ){
+                    felipe.setJuanToPartial();
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.linearActuator.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                }
+                //only after linear actuator reaches target height does the julio start moving
+                if( felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL  ){
+                    felipe.setJulioTo90Right();
+                    felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                }
+
+                telemetry.addData("Lift State",  liftPosition);
+                telemetry.addData("Lift Position (inches)", felipe.getJuanPosition());
+                telemetry.update();
+            }
+
+
+            //if the dpad down is pressed, the code below gets executed
+            if  (liftPosition == LiftPosition.LOAD && julioPosition == JulioPosition.CENTER) {// where we need to go
+                telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
+
+                //this sets the target when the button is pressed as the new STATE is set
+
+
+
+
+                if(felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL && Math.abs(felipe.getJulioPosition()) >= 15) {
+                    felipe.setJulioToZero();
+                    felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+
+                    telemetry.addData("Lift State", liftPosition);
+                    telemetry.addData("Arm Only Moving . Cunnet degrees", felipe.getJuanPosition());
+
+                }
+
+                if(felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL && Math.abs(felipe.getJulioPosition()) < 15) {
+                    felipe.setJuanToLoad();
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
+                    telemetry.addData("Lift State", liftPosition);
+                    telemetry.addData("Arm Only Moving . Cunnet degrees", felipe.getJuanPosition());
+
+                }
+
+
+
+
+            }
+
+
 
             /**
              *
