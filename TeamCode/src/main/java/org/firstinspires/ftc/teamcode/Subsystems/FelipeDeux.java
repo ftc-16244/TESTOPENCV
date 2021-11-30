@@ -68,7 +68,7 @@ public class FelipeDeux {
     public static final double      JULIOARMLEFT            =   -90.0;
     public static final double      JULIOARMCENTER          =   0.0;
     public static final double      JULIOARMRIGHT           =   90.0;
-    public static final double      JULIOTURNSPEED          =   0.5;
+    public static final double      JULIOTURNSPEED          =   0.8;
     public static final double      TICKS_PER_REV           =   1425.1; // 117 RPM motor 50.9:1 reduction
     public static final double      TICKS_PER_DEGREE         =  TICKS_PER_REV/360;
 
