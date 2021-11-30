@@ -259,10 +259,10 @@ public class TeleopMeet2 extends LinearOpMode {
 
                 if((juanError < juanErrorMax) && Math.abs(felipe.getJulioPosition()) >= 15) {
 
-                    //felipe.rotateToTargetAngle(0,1);
-                    felipe.setJulioToZero();
-                    felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                    felipe.rotateToTargetAngle(0,1);
+                    //felipe.setJulioToZero();
+                    //felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
 
                     telemetry.addData("Lift State", liftPosition);
                     telemetry.addData("Arm Only Moving . Cunnet degrees", felipe.getJuanPosition());
