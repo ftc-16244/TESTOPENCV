@@ -32,6 +32,8 @@ public class TeleopMeet2 extends LinearOpMode {
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
 
+    public double juanErrorMax = 15;
+    public double juanError    = Math.abs(felipe.getJuanPosition() - felipe.JUANLIFTPARTIAL) ; //current - target
 
 
     // ENUMS
@@ -205,7 +207,7 @@ public class TeleopMeet2 extends LinearOpMode {
                     felipe.linearActuator.setPower(Math.abs(felipe.JUANLIFTSPEED ));
                 }
                 //only after linear actuator reaches target height does the julio start moving
-                if( felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL ){
+                if( felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL){
                     felipe.setJulioTo90Left();
                     felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
@@ -254,7 +256,7 @@ public class TeleopMeet2 extends LinearOpMode {
 
 
 
-                if(felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL && Math.abs(felipe.getJulioPosition()) >= 15) {
+                if((juanError < juanErrorMax) && Math.abs(felipe.getJulioPosition()) >= 15) {
 
                     felipe.rotateToTargetAngle(0,1);
                     //felipe.setJulioToZero();
@@ -267,7 +269,7 @@ public class TeleopMeet2 extends LinearOpMode {
                 }
 
 
-                if(felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL && Math.abs(felipe.getJulioPosition()) < 15) {
+                if( (juanError < juanErrorMax) && Math.abs(felipe.getJulioPosition()) < 15) {
                     felipe.setJuanToLoad();
                     felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
