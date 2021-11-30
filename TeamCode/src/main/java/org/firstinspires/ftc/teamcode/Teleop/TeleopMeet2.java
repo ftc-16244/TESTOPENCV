@@ -32,9 +32,6 @@ public class TeleopMeet2 extends LinearOpMode {
     // init and setup
     ElapsedTime runtime = new ElapsedTime();
 
-    public double juanErrorMax = 15;
-    public double juanError    = Math.abs(felipe.getJuanPosition() - felipe.JUANLIFTPARTIAL) ; //current - target
-
 
     // ENUMS
     //DriveSpeedState  currDriveState;
@@ -52,6 +49,10 @@ public class TeleopMeet2 extends LinearOpMode {
         carousel.init(hardwareMap,  BLUE);
         felipe.armInit();
         felipe.thumbClose();
+
+        double juanErrorMax = 15;
+        double juanError    = Math.abs(felipe.getJuanPosition() - felipe.JUANLIFTPARTIAL) ; //current - target
+
         // forces Juan to mechanical low stop and sets encoders to zero
         felipe.juanMechanicalReset();
         // this just changes the state. It does not drive any action
