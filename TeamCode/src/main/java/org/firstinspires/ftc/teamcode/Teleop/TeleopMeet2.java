@@ -271,6 +271,7 @@ public class TeleopMeet2 extends LinearOpMode {
 
 
                 if( (juanError < juanErrorMax) && Math.abs(felipe.getJulioPosition()) < 15) {
+
                     felipe.setJuanToLoad();
                     felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -294,15 +295,21 @@ public class TeleopMeet2 extends LinearOpMode {
              *
              **/
 
-            if (gamepad1.left_trigger > 0.25) {
+            if (gamepad1.right_trigger > 0.25) {
                 felipe.homieLeft();
+                sleep(500);
+                felipe.homieCenter();
+                sleep(500);
                 //debounce(400);
                 telemetry.addData("Homie Left", "Complete ");
 
                 //debounce(400);
             }
-            if (gamepad1.right_trigger > 0.25) {
+            if (gamepad1.left_trigger > 0.25) {
                 felipe.homieRight();
+                sleep(500);
+                felipe.homieCenter();
+                sleep(500);
                 telemetry.addData("Homie Right", "Complete ");
             }
 
