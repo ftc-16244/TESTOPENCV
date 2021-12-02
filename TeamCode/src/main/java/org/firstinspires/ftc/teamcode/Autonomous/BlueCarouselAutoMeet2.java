@@ -105,16 +105,16 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         // Trajectories Here
         ///////////////////////////////////////////////////////////////////////////
         Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(41,3,Math.toRadians(179)))
+                .lineToLinearHeading(new Pose2d(42,3,Math.toRadians(179)))
                 .addTemporalMarker(-.25,()->{felipe.armMid();})
                 //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
 
         Trajectory  traj2 = drive.trajectoryBuilder(traj1.end())
-                .addTemporalMarker(-0.6,()->{felipe.thumbOpen();})
-                .addTemporalMarker(.1,()->{felipe.thumbClose();})
-                .addTemporalMarker(.5,()->{felipe.armInit();})
-                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-180)))
+                .addTemporalMarker(-0.8,()->{felipe.thumbOpen();})
+                .addTemporalMarker(1,()->{felipe.thumbClose();})
+                .addTemporalMarker(1.5,()->{felipe.armInit();})
+                .lineToLinearHeading(new Pose2d(15,-34,Math.toRadians(179)))
 
                 .build();
         Trajectory  traj3 = drive.trajectoryBuilder(traj2.end())
@@ -124,29 +124,51 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(30,-30,Math.toRadians(90)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
         Trajectory  traj5 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(41,3,Math.toRadians(179)))
+                .lineToLinearHeading(new Pose2d(42,-26,Math.toRadians(179)))
                 .addTemporalMarker(-.25,()->{felipe.armLow();})
                 //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
-        Trajectory  traj6 = drive.trajectoryBuilder(traj5.end())
-                .addTemporalMarker(-0.6,()->{felipe.thumbOpen();})
-                .addTemporalMarker(.1,()->{felipe.thumbClose();})
-                .addTemporalMarker(.5,()->{felipe.armInit();})
-                .lineToLinearHeading(new Pose2d(9,-30,Math.toRadians(-180)))
+        Trajectory  traj5_midarm = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(42,-26,Math.toRadians(179)))
+                .addTemporalMarker(-.25,()->{felipe.armMid();})
+                //.addTemporalMarker(-.25,()->{felipe.liftRise();})
+                .build();
+        Trajectory  traj5a = drive.trajectoryBuilder(traj5.end())
+                .lineToLinearHeading(new Pose2d(42,3,Math.toRadians(179)))
+                .addTemporalMarker(-.25,()->{felipe.armLow();})
+                //.addTemporalMarker(-.25,()->{felipe.liftRise();})
+                .build();
+        Trajectory  traj5a_midarm = drive.trajectoryBuilder(traj5_midarm.end())
+                .lineToLinearHeading(new Pose2d(42,3,Math.toRadians(179)))
+                .addTemporalMarker(-.25,()->{felipe.armMid();})
+                //.addTemporalMarker(-.25,()->{felipe.liftRise();})
+                .build();
+        Trajectory  traj5b = drive.trajectoryBuilder(traj5a.end())
+
+                .lineToLinearHeading(new Pose2d(42,-25,Math.toRadians(179)))
+                .addTemporalMarker(-0.8,()->{felipe.thumbOpen();})
+                .addTemporalMarker(1,()->{felipe.thumbClose();})
+                .addTemporalMarker(1.5,()->{felipe.armInit();})
+                .build();
+        Trajectory  traj6 = drive.trajectoryBuilder(traj5b.end())
+                .addTemporalMarker(-0.8,()->{felipe.thumbOpen();})
+                .addTemporalMarker(1,()->{felipe.thumbClose();})
+                .addTemporalMarker(1.5,()->{felipe.armInit();})
+                .lineToLinearHeading(new Pose2d(20,-34,Math.toRadians(179)))
 
                 .build();
         Trajectory  traj7 = drive.trajectoryBuilder(traj6.end())
                 // final touch up to engage carousel
-                .forward(5)
+                .forward(10)
                 .addTemporalMarker(.25,()->{carousel.carouselTurnCCW();})
                 .build();
         Trajectory  traj8 = drive.trajectoryBuilder(traj7.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(26,-28,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(28,-30,Math.toRadians(90)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
 
@@ -218,9 +240,11 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
             switch(barcode){
                 case LEFT: //
                     drive.followTrajectory(traj5);
+                    drive.followTrajectory(traj5a);
+                    drive.followTrajectory(traj5b);
                     drive.followTrajectory(traj6);
                     felipe.liftLoad();
-                    drive.followTrajectory(traj7);
+                    drive.followTrajectory(traj7);//park
 
                     //delay to let carousel turn
                     timer.reset();
@@ -229,12 +253,12 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                     drive.followTrajectory(traj8);
 
                     break;                case CENTER: //
-                    drive.followTrajectory(traj1);
-                    drive.followTrajectory(traj2);
+                    drive.followTrajectory(traj5_midarm);
+                    drive.followTrajectory(traj5a_midarm);
+                    drive.followTrajectory(traj5b);
+                    drive.followTrajectory(traj6);
                     felipe.liftLoad();
-                    drive.followTrajectory(traj3);
-
-                    //delay to let carousel turn
+                    drive.followTrajectory(traj7);//park
                     timer.reset();
                     while(timer.seconds() < ducktime) drive.update();
 
