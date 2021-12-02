@@ -28,9 +28,9 @@ public class FelipeDeux {
     ElapsedTime runtime = new ElapsedTime();
 
     //Constants Lift
-    public static final double      JUANLIFTSPEED               =   1.0; // if this is too fast you cannot reset without hitting the framwe
+    public static final double      JUANLIFTSPEED               =   1.0; //
     //public static final int       JUANLIFTDOWN                =   0; // use the LOAD instead of down. Zero pushes wheels off the mat
-    public static final double      JUANLIFTPARTIAL             =   5.0;
+    public static final double      JUANLIFTPARTIAL             =   5.25;
     public static final int         JUANLIFTLOW                 =   2;
     public static final double      JUANLIFTUP                  =   7.0; //Number is in inches
     public static final double      JUANLIFTLOAD                =   0.5; //Number is in inches
@@ -68,7 +68,7 @@ public class FelipeDeux {
     public static final double      JULIOARMLEFT            =   -90.0;
     public static final double      JULIOARMCENTER          =   0.0;
     public static final double      JULIOARMRIGHT           =   90.0;
-    public static final double      JULIOTURNSPEED          =   0.5;
+    public static final double      JULIOTURNSPEED          =   0.5; // if this goes to fast it bounces back and hits the frame
     public static final double      TICKS_PER_REV           =   1425.1; // 117 RPM motor 50.9:1 reduction
     public static final double      TICKS_PER_DEGREE         =  TICKS_PER_REV/360;
 
