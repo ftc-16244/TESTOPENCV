@@ -301,6 +301,8 @@ public class TeleopMeet2 extends LinearOpMode {
                 felipe.homieCenter();
                 sleep(500);
                 //debounce(400);
+                sleep(500);
+                felipe.homieCenter();
                 telemetry.addData("Homie Left", "Complete ");
 
                 //debounce(400);
@@ -308,8 +310,9 @@ public class TeleopMeet2 extends LinearOpMode {
             if (gamepad1.left_trigger > 0.25) {
                 felipe.homieRight();
                 sleep(500);
-                felipe.homieCenter();
-                sleep(500);
+               felipe.homieCenter();
+               sleep(500);
+
                 telemetry.addData("Homie Right", "Complete ");
             }
 
