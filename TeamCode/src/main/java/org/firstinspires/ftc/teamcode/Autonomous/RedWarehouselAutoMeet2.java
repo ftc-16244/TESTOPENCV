@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,18 +14,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Enums.Barcode;
 import org.firstinspires.ftc.teamcode.Enums.GameElement;
 import org.firstinspires.ftc.teamcode.Enums.LiftPosition;
 import org.firstinspires.ftc.teamcode.Enums.PatrickState;
 import org.firstinspires.ftc.teamcode.Subsystems.CarouselTurnerThingy;
-import org.firstinspires.ftc.teamcode.Subsystems.Felipe;
 import org.firstinspires.ftc.teamcode.Subsystems.FelipeDeux;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-
-import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
 
@@ -32,8 +30,8 @@ import java.util.List;
  * This is a simple routine to test translational drive capabilities.
  */
 @Config
-@Autonomous(group = "Test")
-public class BlueCarouselAutoMeet2 extends LinearOpMode {
+@Autonomous(group = "Auto")
+public class RedWarehouselAutoMeet2 extends LinearOpMode {
 
     public static double DISTANCE = 30; // in
     public ElapsedTime   tfTime      = new ElapsedTime(); // timer for tensor flow
@@ -104,34 +102,32 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories - HIGH GOAL
         ///////////////////////////////////////////////////////////////////////////
-        Trajectory  traj_HG_01 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(42,3,Math.toRadians(179)))
-                .addTemporalMarker(-.25,()->{felipe.armMid();})
-                //.addTemporalMarker(-.25,()->{felipe.liftRise();})
+        Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
+                .forward(15)
                 .build();
 
-        Trajectory  traj_HG_02 = drive.trajectoryBuilder(traj_HG_01.end())
-                .lineToLinearHeading(new Pose2d(42,-34,Math.toRadians(179)))
+        Trajectory  traj2 = drive.trajectoryBuilder(traj1.end().plus(new Pose2d(0,0,Math.toRadians(90))))
+                .forward(16)
+                .build();
+
+        Trajectory traj3 = drive.trajectoryBuilder(traj2.end())
+                .addTemporalMarker(0.25,()->{felipe.armMid();})
+                .strafeRight(13)
+
+                .build();
+        // Move away from the alliance shipping hub so the arm can be retracted without hitting the hub
+        Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
                 .addTemporalMarker(-0.8,()->{felipe.thumbOpen();})
                 .addTemporalMarker(1,()->{felipe.thumbClose();})
                 .addTemporalMarker(1.5,()->{felipe.armInit();})
+                .strafeLeft(8.5)
 
                 .build();
-
-        Trajectory  traj_HG_03 = drive.trajectoryBuilder(traj_HG_02.end())
-
-                .lineToLinearHeading(new Pose2d(15,-34,Math.toRadians(179)))
-
+        Trajectory traj5 = drive.trajectoryBuilder(traj4.end())
+               .back(20)
                 .build();
-        Trajectory  traj_HG_04 = drive.trajectoryBuilder(traj_HG_03.end())
-                // final touch up to engage carousel
-                .forward(5)
-                .addTemporalMarker(.25,()->{carousel.carouselTurnCCWAuto();})
-                .build();
-        Trajectory  traj_HG_05 = drive.trajectoryBuilder(traj_HG_04.end())
-                //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(30,-30,Math.toRadians(90)))
-                .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
+        Trajectory traj6 = drive.trajectoryBuilder(traj5.end().plus(new Pose2d(0,0,Math.toRadians(-180))))
+                .strafeRight(15)
                 .build();
 
         ///////////////////////////////////////////////////////////////////////////
@@ -146,7 +142,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
                 .build();
 
         Trajectory  traj_MG_02 = drive.trajectoryBuilder(traj_MG_01.end())
-                .lineToLinearHeading(new Pose2d(42,3,Math.toRadians(179)))
+                .lineToLinearHeading(new Pose2d(42,-3,Math.toRadians(90)))
                 .addTemporalMarker(0.25,()->{felipe.armMid();})
                 //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
@@ -256,48 +252,49 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
 
             switch(barcode){
                 case LEFT: //
-                    drive.followTrajectory(traj_LG_01);
-                    drive.followTrajectory(traj_LG_02);
-                    drive.followTrajectory(traj_LG_03);
-                    drive.followTrajectory(traj_LG_04);
+                    felipe.liftRise();
+                    drive.followTrajectory(traj1);
+                    drive.turn(Math.toRadians(90));
+                    drive.followTrajectory(traj2);
+                    drive.followTrajectory(traj3);
+                    drive.followTrajectory(traj4);
+
+                    drive.followTrajectory(traj5);
                     felipe.liftLoad();
-                    drive.followTrajectory(traj_LG_05);//park
+                    drive.turn(Math.toRadians(-180));
 
-                    //delay to let carousel turn
-                    timer.reset();
-                    while(timer.seconds() < ducktime) drive.update();
-
-                    drive.followTrajectory(traj_LG_06);
+                    drive.followTrajectory(traj6);
 
                     break;
 
                 case CENTER: //
-                    drive.followTrajectory(traj_MG_01);
-                    drive.followTrajectory(traj_MG_02);
-                    drive.followTrajectory(traj_MG_03);
-                    drive.followTrajectory(traj_MG_04);
-                    felipe.liftLoad();
-                    drive.followTrajectory(traj_MG_05);
-                    timer.reset();
-                    while(timer.seconds() < ducktime) drive.update();
+                    felipe.liftRise();
+                    drive.followTrajectory(traj1);
+                    drive.turn(Math.toRadians(90));
+                    drive.followTrajectory(traj2);
+                    drive.followTrajectory(traj3);
+                    drive.followTrajectory(traj4);
 
-                    drive.followTrajectory(traj_MG_06); //park
+                    drive.followTrajectory(traj5);
+                    felipe.liftLoad();
+                    drive.turn(Math.toRadians(-180));
+                    drive.followTrajectory(traj6);
 
                     break;
 
                 case RIGHT: //level 3 highest goal
                     felipe.liftRise();
-                    drive.followTrajectory(traj_HG_01);
-                    drive.followTrajectory(traj_HG_02);
-                    drive.followTrajectory(traj_HG_03);
+                    drive.followTrajectory(traj1);
+                    drive.turn(Math.toRadians(-180));
+                    drive.followTrajectory(traj2);
+                    drive.followTrajectory(traj3);
+                    drive.followTrajectory(traj4);
+
+                    drive.followTrajectory(traj5);
                     felipe.liftLoad();
-                    drive.followTrajectory(traj_HG_04);
+                    drive.turn(Math.toRadians(-90));
+                    drive.followTrajectory(traj6);
 
-                    //delay to let carousel turn
-                    timer.reset();
-                    while(timer.seconds() < ducktime) drive.update();
-
-                    drive.followTrajectory(traj_HG_05);
 
                     break;
             }

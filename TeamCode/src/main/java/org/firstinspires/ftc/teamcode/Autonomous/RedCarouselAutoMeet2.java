@@ -111,7 +111,7 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
                 .build();
         Trajectory  traj1 = drive.trajectoryBuilder(traj0.end())
                 .lineToLinearHeading(new Pose2d(39,-6,Math.toRadians(0)))
-                .addTemporalMarker(-.25,()->{felipe.armMid();})
+                .addTemporalMarker(.1,()->{felipe.armMid();})
                 //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
 
