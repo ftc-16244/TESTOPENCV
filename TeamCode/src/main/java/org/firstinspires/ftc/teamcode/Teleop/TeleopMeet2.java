@@ -83,8 +83,9 @@ public class TeleopMeet2 extends LinearOpMode {
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.update();
 
-
-            // Gampepad 1 Functions
+            //////////////////////////////////////////////
+            // Gampepad 1 Functions///////////////////////
+            /////////////////////////////////////////////
 
             /**
              *
@@ -163,8 +164,8 @@ public class TeleopMeet2 extends LinearOpMode {
             }
 
             if (gamepad1.a) {
-                carousel.carouselTurnOff();
-                telemetry.addData("Turning Off", "Complete ");
+                felipe.homieCenter();
+
             }
 
 
@@ -193,6 +194,101 @@ public class TeleopMeet2 extends LinearOpMode {
             if (gamepad1.dpad_up) {//this one works
                 liftPosition = LiftPosition.UP;
             }
+
+
+
+
+            /**
+             *
+             * Gamepad #1 Triggers - Homie Controls
+             *
+             **/
+
+            if (gamepad1.right_trigger > 0.25) {
+                felipe.homieLeft();
+                sleep(500);
+                felipe.homieCenter();
+                sleep(500);
+                //debounce(400);
+                sleep(500);
+                felipe.homieCenter();
+                telemetry.addData("Homie Left", "Complete ");
+
+                //debounce(400);
+            }
+            if (gamepad1.left_trigger > 0.25) {
+                felipe.homieRight();
+                sleep(500);
+                felipe.homieCenter();
+                sleep(500);
+
+                telemetry.addData("Homie Right", "Complete ");
+            }
+            /**
+             *
+             * Gamepad #1 Back Buttons
+             *
+             **/
+
+            if (gamepad1.back) {
+                felipe.julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  }
+
+
+            //////////////////////////////////////////////
+            // Gampepad 2 Functions///////////////////////
+            /////////////////////////////////////////////
+
+            /**
+             *
+             * Gamepad #2  - Buttons       *
+             **/
+
+
+
+            // Carousel Functions
+            if (gamepad2.x) {
+                carousel.carouselTurnCCW();
+                telemetry.addData("Turning CCW", "Complete ");
+            }
+            if (gamepad2.b) {
+                carousel.carouselTurnCW();
+                telemetry.addData("Turning CW", "Complete ");
+            }
+            if (gamepad2.y) {
+                carousel.carouselTurnOff();
+                telemetry.addData("Turning Off", "Complete ");
+            }
+
+            if (gamepad2.back) {
+                felipe.julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  }
+
+            /**
+             *
+             * Gamepad #2  - DPAD       *
+             **/
+
+
+            if (gamepad2.dpad_left) {
+                liftPosition = LiftPosition.PARTIAL;
+                julioPosition = JulioPosition.LEFT45;
+                telemetry.addData("High Goal Left", "Complete");
+                telemetry.addData("Lift State",liftPosition);
+                telemetry.addData("Arm State", julioPosition);
+            }
+            if (gamepad2.dpad_right) {
+                liftPosition = LiftPosition.PARTIAL;
+                julioPosition = JulioPosition.RIGHT45;
+                telemetry.addData("High Goal Right","Complete");
+            }
+            if (gamepad2.dpad_down) {//this one works
+                julioPosition = JulioPosition.CENTER;
+                liftPosition = LiftPosition.LOAD;
+            }
+
+            if (gamepad2.dpad_up) {//this one works
+                liftPosition = LiftPosition.UP;
+            }
+
             /////////////////////////////////////////////////////////////////////////
             //States and Trasnitions//////////////////////////////////////////////
             if  (liftPosition == LiftPosition.PARTIAL && julioPosition == JulioPosition.LEFT90) {// where we need to go
@@ -289,83 +385,7 @@ public class TeleopMeet2 extends LinearOpMode {
 
 
 
-            /**
-             *
-             * Gamepad #1 Triggers - Homie Controls
-             *
-             **/
 
-            if (gamepad1.right_trigger > 0.25) {
-                felipe.homieLeft();
-                sleep(500);
-                felipe.homieCenter();
-                sleep(500);
-                //debounce(400);
-                sleep(500);
-                felipe.homieCenter();
-                telemetry.addData("Homie Left", "Complete ");
-
-                //debounce(400);
-            }
-            if (gamepad1.left_trigger > 0.25) {
-                felipe.homieRight();
-                sleep(500);
-               felipe.homieCenter();
-               sleep(500);
-
-                telemetry.addData("Homie Right", "Complete ");
-            }
-
-             /**
-             *
-             * Gamepad #2  - Buttons       *
-             **/
-
-
-
-            // Carousel Functions
-            if (gamepad2.x) {
-                carousel.carouselTurnCCW();
-                telemetry.addData("Turning CCW", "Complete ");
-            }
-            if (gamepad2.b) {
-                carousel.carouselTurnCW();
-                telemetry.addData("Turning CW", "Complete ");
-            }
-            if (gamepad2.y) {
-                carousel.carouselTurnOff();
-                telemetry.addData("Turning Off", "Complete ");
-            }
-
-            if (gamepad2.back) {
-                felipe.julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  }
-
-            /**
-             *
-             * Gamepad #2  - DPAD       *
-             **/
-
-
-            if (gamepad2.dpad_left) {
-                liftPosition = LiftPosition.PARTIAL;
-                julioPosition = JulioPosition.LEFT45;
-                telemetry.addData("High Goal Left", "Complete");
-                telemetry.addData("Lift State",liftPosition);
-                telemetry.addData("Arm State", julioPosition);
-            }
-            if (gamepad2.dpad_right) {
-                liftPosition = LiftPosition.PARTIAL;
-                julioPosition = JulioPosition.RIGHT45;
-                telemetry.addData("High Goal Right","Complete");
-            }
-            if (gamepad2.dpad_down) {//this one works
-                julioPosition = JulioPosition.CENTER;
-                liftPosition = LiftPosition.LOAD;
-            }
-
-            if (gamepad2.dpad_up) {//this one works
-                liftPosition = LiftPosition.UP;
-            }
             /////////////////////////////////////////////////////////////////////////
             //States and Trasnitions//////////////////////////////////////////////
             if  (liftPosition == LiftPosition.PARTIAL && julioPosition == JulioPosition.LEFT45) {// where we need to go
