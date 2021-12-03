@@ -18,32 +18,36 @@ public class CarouselTurnerThingy {
 
     public static final double      CAROUSELOFF = 0;
     public static final double      CAROUSELON = 0.40;
+    public static final double      CAROUSELONAUTOONLY = 0.30;
 
     // create a constructor to add in the special requirements
 
 
 
-    public void init(HardwareMap hwMap, Alliance Color)  {
+    public void init(HardwareMap hwMap)  {
         carousel = hwMap.get(DcMotor.class,"carousel");
         carousel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        if(Color == BLUE) {
-            carousel.setDirection(DcMotor.Direction.FORWARD);
-        }
-        else {
-            carousel.setDirection(DcMotor.Direction.REVERSE);
-        }
 
     }
 
     public void carouselTurnOff() {
         carousel.setPower(CAROUSELOFF);
     }
+    // CCW is for the blue side
     public void carouselTurnCCW() {
         carousel.setPower(CAROUSELON);
     }
 
     public void carouselTurnCW() {
         carousel.setPower(-CAROUSELON);
+    }
+
+    public void carouselTurnCCWAuto() {
+        carousel.setPower(CAROUSELONAUTOONLY);
+    }
+
+    public void carouselTurnCWAuto() {
+        carousel.setPower(-CAROUSELONAUTOONLY);
     }
 
     }
