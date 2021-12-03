@@ -48,7 +48,7 @@ public class FieldCoordiante_Auto_test_Blue_Carosel_Side extends LinearOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap, BLUE);
+        carousel.init(hardwareMap);
 
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories Here

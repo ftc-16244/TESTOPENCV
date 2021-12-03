@@ -25,7 +25,7 @@ import static org.firstinspires.ftc.teamcode.Enums.Alliance.BLUE;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "Test")
-//@Disabled
+@Disabled
 public class NewFelipeTest extends LinearOpMode {
 
     NewFelipe felipe = new NewFelipe(this);
