@@ -222,7 +222,7 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
 
         }
         telemetry.addData("highgoal", barcode);
-        if (tfod != null) { 
+        if (tfod != null) {
             tfod.shutdown();
         }
 
