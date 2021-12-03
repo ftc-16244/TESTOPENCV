@@ -46,7 +46,7 @@ public class TeleopMeet2 extends LinearOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap,  BLUE);
+        carousel.init(hardwareMap);
         felipe.armInit();
         felipe.thumbClose();
 
@@ -339,6 +339,13 @@ public class TeleopMeet2 extends LinearOpMode {
 
             if (gamepad2.back) {
                 felipe.julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  }
+
+            /**
+             *
+             * Gamepad #2  - DPAD       *
+             **/
+
+
             if (gamepad2.dpad_left) {
                 liftPosition = LiftPosition.PARTIAL;
                 julioPosition = JulioPosition.LEFT45;
