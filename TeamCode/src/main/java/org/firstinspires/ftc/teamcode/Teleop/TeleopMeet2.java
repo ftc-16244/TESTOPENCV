@@ -323,7 +323,6 @@ public class TeleopMeet2 extends LinearOpMode {
 
 
 
-
             // Carousel Functions
             if (gamepad2.x) {
                 carousel.carouselTurnCCW();
@@ -340,24 +339,119 @@ public class TeleopMeet2 extends LinearOpMode {
 
             if (gamepad2.back) {
                 felipe.julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  }
-            /**
-             *
-             * Gamepad #2 Bumpers
-             *
-             **/
+            if (gamepad2.dpad_left) {
+                liftPosition = LiftPosition.PARTIAL;
+                julioPosition = JulioPosition.LEFT45;
+                telemetry.addData("High Goal Left", "Complete");
+                telemetry.addData("Lift State",liftPosition);
+                telemetry.addData("Arm State", julioPosition);
+            }
+            if (gamepad2.dpad_right) {
+                liftPosition = LiftPosition.PARTIAL;
+                julioPosition = JulioPosition.RIGHT45;
+                telemetry.addData("High Goal Right","Complete");
+            }
+            if (gamepad2.dpad_down) {//this one works
+                julioPosition = JulioPosition.CENTER;
+                liftPosition = LiftPosition.LOAD;
+            }
 
-            /**
-             *
-             * Gamepad #2 Triggers
-             *
-             **/
-            /**
-             *
-             * Gamepad #2 DPAD
-             *
-             **/
+            if (gamepad2.dpad_up) {//this one works
+                liftPosition = LiftPosition.UP;
+            }
+            /////////////////////////////////////////////////////////////////////////
+            //States and Trasnitions//////////////////////////////////////////////
+            if  (liftPosition == LiftPosition.PARTIAL && julioPosition == JulioPosition.LEFT45) {// where we need to go
+                telemetry.addData("Going to Lift PARTIAL and Left 45 Degrees", "Done");
+
+                //this sets the target when the button is pressed as the new STATE is set
 
 
+
+                if( felipe.getJuanPosition() < felipe.JUANLIFTPARTIAL ){
+                    felipe.setJuanToPartial();
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.linearActuator.setPower(Math.abs(felipe.JUANLIFTSPEED ));
+                }
+                //only after linear actuator reaches target height does the julio start moving
+                if( felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL){
+                    felipe.setJulioTo45Left();
+                    felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                }
+
+                telemetry.addData("Lift State",  liftPosition);
+                telemetry.addData("Lift Position (inches)", felipe.getJuanPosition());
+                telemetry.update();
+            }
+
+
+
+
+            //if the dpad right is pressed, the code below gets executed
+            if  (liftPosition == LiftPosition.PARTIAL && julioPosition == JulioPosition.RIGHT45) {// where we need to go
+                telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
+
+                //this sets the target when the button is pressed as the new STATE is set
+
+
+                if( felipe.getJuanPosition() < felipe.JUANLIFTPARTIAL  ){
+                    felipe.setJuanToPartial();
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.linearActuator.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                }
+                //only after linear actuator reaches target height does the julio start moving
+                if( felipe.getJuanPosition() >= felipe.JUANLIFTPARTIAL  ){
+                    felipe.setJulioTo45Right();
+                    felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+                }
+
+                telemetry.addData("Lift State",  liftPosition);
+                telemetry.addData("Lift Position (inches)", felipe.getJuanPosition());
+                telemetry.update();
+            }
+
+
+            //if the dpad down is pressed, the code below gets executed
+            if  (liftPosition == LiftPosition.LOAD && julioPosition == JulioPosition.CENTER) {// where we need to go
+                telemetry.addData("Going to Lift PARTIAL and Right 90 Degrees", "Done");
+
+                //this sets the target when the button is pressed as the new STATE is set
+
+
+
+
+
+                if((juanError < juanErrorMax) && Math.abs(felipe.getJulioPosition()) >= 15) {
+
+                    felipe.rotateToTargetAngle(0,1);
+                    //felipe.setJulioToZero();
+                    //felipe.julioArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //felipe.julioArm.setPower(Math.abs(felipe.JULIOTURNSPEED));
+
+                    telemetry.addData("Lift State", liftPosition);
+                    telemetry.addData("Arm Only Moving . Cunnet degrees", felipe.getJuanPosition());
+
+                }
+
+
+                if( (juanError < juanErrorMax) && Math.abs(felipe.getJulioPosition()) < 15) {
+
+                    felipe.setJuanToLoad();
+                    felipe.linearActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
+                    telemetry.addData("Lift State", liftPosition);
+                    telemetry.addData("Arm Only Moving . Cunnet degrees", felipe.getJuanPosition());
+
+                }
+
+
+
+
+            }
 
             telemetry.update();
 

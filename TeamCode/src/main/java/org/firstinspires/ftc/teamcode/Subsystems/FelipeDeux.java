@@ -66,8 +66,10 @@ public class FelipeDeux {
 
     //Constants for new motor version of Julio
     public static final double      JULIOARMLEFT            =   -100.0;
+    public static final double      JULIOARMLEFT45          =   -45.0;
     public static final double      JULIOARMCENTER          =   0.0;
     public static final double      JULIOARMRIGHT           =   100.0;
+    public static final double      JULIOARMRIGHT45          =  45.0;
     public static final double      JULIOTURNSPEED          =   0.5; // if this goes to fast it bounces back and hits the frame
     public static final double      TICKS_PER_REV           =   1425.1; // 117 RPM motor 50.9:1 reduction
     public static final double      TICKS_PER_DEGREE         =  TICKS_PER_REV/360;
@@ -194,8 +196,18 @@ public class FelipeDeux {
 
     }
 
+    public void setJulioTo45Right(){
+        julioArm.setTargetPosition( (int)(JULIOARMRIGHT45 *  TICKS_PER_DEGREE));
+
+    }
+
     public void setJulioTo90Left(){
         julioArm.setTargetPosition( (int)(JULIOARMLEFT *  TICKS_PER_DEGREE));
+
+    }
+
+    public void setJulioTo45Left(){
+        julioArm.setTargetPosition( (int)(JULIOARMLEFT45 *  TICKS_PER_DEGREE));
 
     }
 
