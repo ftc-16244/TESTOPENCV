@@ -338,7 +338,9 @@ public class TeleopMeet2 extends LinearOpMode {
                 telemetry.addData("Turning Off", "Complete ");
             }
 
-              /**
+            if (gamepad2.back) {
+                felipe.julioArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  }
+            /**
              *
              * Gamepad #2 Bumpers
              *

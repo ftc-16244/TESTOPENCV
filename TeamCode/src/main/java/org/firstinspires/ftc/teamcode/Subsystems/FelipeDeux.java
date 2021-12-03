@@ -65,9 +65,9 @@ public class FelipeDeux {
     //public static final double          JULIODELAY              = 0.5;
 
     //Constants for new motor version of Julio
-    public static final double      JULIOARMLEFT            =   -90.0;
+    public static final double      JULIOARMLEFT            =   -100.0;
     public static final double      JULIOARMCENTER          =   0.0;
-    public static final double      JULIOARMRIGHT           =   90.0;
+    public static final double      JULIOARMRIGHT           =   100.0;
     public static final double      JULIOTURNSPEED          =   0.5; // if this goes to fast it bounces back and hits the frame
     public static final double      TICKS_PER_REV           =   1425.1; // 117 RPM motor 50.9:1 reduction
     public static final double      TICKS_PER_DEGREE         =  TICKS_PER_REV/360;
