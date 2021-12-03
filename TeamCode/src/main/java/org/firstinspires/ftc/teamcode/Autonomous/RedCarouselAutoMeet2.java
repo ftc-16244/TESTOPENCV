@@ -104,28 +104,39 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories Here
         ///////////////////////////////////////////////////////////////////////////
-        Trajectory  traj1 = drive.trajectoryBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(41,-3,Math.toRadians(0)))
+        Trajectory  traj0 = drive.trajectoryBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(39,30,Math.toRadians(0)))
+                //.addTemporalMarker(-.25,()->{felipe.armMid();})
+                //.addTemporalMarker(-.25,()->{felipe.liftRise();})
+                .build();
+        Trajectory  traj1 = drive.trajectoryBuilder(traj0.end())
+                .lineToLinearHeading(new Pose2d(39,-6,Math.toRadians(0)))
                 .addTemporalMarker(-.25,()->{felipe.armMid();})
                 //.addTemporalMarker(-.25,()->{felipe.liftRise();})
                 .build();
 
         Trajectory  traj2 = drive.trajectoryBuilder(traj1.end())
-                .addTemporalMarker(-0.6,()->{felipe.thumbOpen();})
-                .addTemporalMarker(.1,()->{felipe.thumbClose();})
-                .addTemporalMarker(.5,()->{felipe.armInit();})
-                .lineToLinearHeading(new Pose2d(9,30,Math.toRadians(90)))
+                .addTemporalMarker(-0.8,()->{felipe.thumbOpen();})
+                .addTemporalMarker(1,()->{felipe.thumbClose();})
+                .addTemporalMarker(1.5,()->{felipe.armInit();})
+                .lineToLinearHeading(new Pose2d(39,29,Math.toRadians(90)))
 
                 .build();
 
-        Trajectory  traj3 = drive.trajectoryBuilder(traj2.end())
+        Trajectory  traj2A = drive.trajectoryBuilder(traj2.end())
+
+                .lineToLinearHeading(new Pose2d(11,29,Math.toRadians(90)))
+
+                .build();
+
+        Trajectory  traj3 = drive.trajectoryBuilder(traj2A.end())
                 // final touch up to engage carousel
-                .forward(1)
-                .addTemporalMarker(.25,()->{carousel.carouselTurnCCW();})
+                .strafeLeft(6)
+                .addTemporalMarker(.25,()->{carousel.carouselTurnCW();})
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
-                .lineToLinearHeading(new Pose2d(39,25,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(30,29,Math.toRadians(-90)))
                 .addTemporalMarker(.25,()->{carousel.carouselTurnOff();})
                 .build();
         Trajectory  traj5 = drive.trajectoryBuilder(new Pose2d())
@@ -219,8 +230,10 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
         switch(barcode){
             case RIGHT: //
                 felipe.liftRise();
+                drive.followTrajectory(traj0);
                 drive.followTrajectory(traj1);
                 drive.followTrajectory(traj2);
+                drive.followTrajectory(traj2A);
                 felipe.liftLoad();
                 drive.followTrajectory(traj3);
 
@@ -232,10 +245,11 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
 
                 break;
                 case CENTER: //
-                drive.followTrajectory(traj1);
-                drive.followTrajectory(traj2);
-                felipe.liftLoad();
-                drive.followTrajectory(traj3);
+                    drive.followTrajectory(traj0);
+                    drive.followTrajectory(traj1);
+                    drive.followTrajectory(traj2);
+                    drive.followTrajectory(traj2A);
+                    drive.followTrajectory(traj3);
 
                 //delay to let carousel turn
                 timer.reset();
