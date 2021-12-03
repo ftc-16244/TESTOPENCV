@@ -50,7 +50,7 @@ public class RedWarehouse extends LinearOpMode {
         double ducktime = 4; // carosel rotation time
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap, BLUE);
+        carousel.init(hardwareMap);
 
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories Here

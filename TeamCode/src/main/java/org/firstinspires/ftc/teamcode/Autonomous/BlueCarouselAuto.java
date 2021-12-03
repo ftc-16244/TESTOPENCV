@@ -49,7 +49,7 @@ public class BlueCarouselAuto extends LinearOpMode {
         double ducktime = 2.5; // carosel rotation time
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap, BLUE);
+        carousel.init(hardwareMap);
 
         ///////////////////////////////////////////////////////////////////////////
         // Trajectories Here

@@ -98,7 +98,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         double ducktime = 2.5; // carosel rotation time
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap, BLUE);
+        carousel.init(hardwareMap);
         felipe.juanMechanicalReset();
 
         ///////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ public class BlueCarouselAutoMeet2 extends LinearOpMode {
         Trajectory  traj3 = drive.trajectoryBuilder(traj2.end())
                 // final touch up to engage carousel
                 .forward(5)
-                .addTemporalMarker(.25,()->{carousel.carouselTurnCCW();})
+                .addTemporalMarker(.25,()->{carousel.carouselTurnCCWAuto();})
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better

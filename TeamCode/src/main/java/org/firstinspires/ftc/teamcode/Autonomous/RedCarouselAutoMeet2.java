@@ -98,7 +98,7 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
         double ducktime = 2.5; // carosel rotation time
         // initialize the other subsystems
         felipe.init(hardwareMap);
-        carousel.init(hardwareMap, BLUE);
+        carousel.init(hardwareMap);
         felipe.juanMechanicalReset();
 
         ///////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
         Trajectory  traj3 = drive.trajectoryBuilder(traj2A.end())
                 // final touch up to engage carousel
                 .strafeLeft(6)
-                .addTemporalMarker(.25,()->{carousel.carouselTurnCW();})
+                .addTemporalMarker(.25,()->{carousel.carouselTurnCWAuto();})
                 .build();
         Trajectory  traj4 = drive.trajectoryBuilder(traj3.end())
                 //back away but stay out of the wall to make it move better
@@ -222,7 +222,7 @@ public class RedCarouselAutoMeet2 extends LinearOpMode {
 
         }
         telemetry.addData("highgoal", barcode);
-        if (tfod != null) {
+        if (tfod != null) { 
             tfod.shutdown();
         }
 
