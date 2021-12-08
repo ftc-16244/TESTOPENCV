@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.Test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -14,10 +16,10 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@TeleOp (name = "ringDetector", group = "Tests")
+@Autonomous(name = "ringDetector", group = "Tests")
 public class RingDetection extends LinearOpMode {
 
-    OpenCvCamera phoneCam;
+    OpenCvCamera webcam;
 
     // CONSTANTS
 
@@ -32,17 +34,48 @@ public class RingDetection extends LinearOpMode {
     @Override
     public void runOpMode()
     {
-        // Camera Init
+        //Sets up the preview display. This happen before getting a camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        phoneCam.openCameraDevice();
+
+        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
+       
+
+        // Create the camera instance with live preview
+
+        OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcam, cameraMonitorViewId);
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED); // call before start of stream to improve performance
+                camera.startStreaming(320, 240,OpenCvCameraRotation.UPRIGHT);
+            }
+            @Override
+            public void onError(int errorCode)
+            {
+                /*
+                 * This will be called if the camera could not be opened
+                 */
+            }
+        });
+
+
+        
+        // Camera Init
+        //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        //phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        //phoneCam.openCameraDevice();
 
         // Loading pipeline
+
+
         RingPipeline visionPipeline = new RingPipeline();
-        phoneCam.setPipeline(visionPipeline);
+        //phoneCam.setPipeline(visionPipeline);
 
         // Start streaming the pipeline
-        phoneCam.startStreaming(320,240,OpenCvCameraRotation.UPRIGHT);
+        //phoneCam.startStreaming(320,240,OpenCvCameraRotation.UPRIGHT);
 
         waitForStart();
 
