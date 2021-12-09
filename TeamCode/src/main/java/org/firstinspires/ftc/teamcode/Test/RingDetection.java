@@ -13,13 +13,13 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name = "ringDetector", group = "Tests")
 public class RingDetection extends LinearOpMode {
 
-    OpenCvCamera webcam;
+    OpenCvWebcam webcam;
 
     // CONSTANTS
 
@@ -36,22 +36,21 @@ public class RingDetection extends LinearOpMode {
     {
         //Sets up the preview display. This happen before getting a camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        RingPipeline visionPipeline = new RingPipeline();
+        webcam.setPipeline(visionPipeline);
+        webcam.setMillisecondsPermissionTimeout(2500); // Timeout for obtaining permission is configurable. Set before opening.
 
-        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
-       
-
-        // Create the camera instance with live preview
-
-        OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcam, cameraMonitorViewId);
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        // the openCameraDeviceAsync and the onOpened and onError methods are recent additions that most example
+        // do not have yet.
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED); // call before start of stream to improve performance
-                camera.startStreaming(320, 240,OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
+
             @Override
             public void onError(int errorCode)
             {
@@ -62,20 +61,6 @@ public class RingDetection extends LinearOpMode {
         });
 
 
-        
-        // Camera Init
-        //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        //phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        //phoneCam.openCameraDevice();
-
-        // Loading pipeline
-
-
-        RingPipeline visionPipeline = new RingPipeline();
-        //phoneCam.setPipeline(visionPipeline);
-
-        // Start streaming the pipeline
-        //phoneCam.startStreaming(320,240,OpenCvCameraRotation.UPRIGHT);
 
         waitForStart();
 
