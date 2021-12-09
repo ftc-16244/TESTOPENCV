@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name="OpenCV_Test", group="Tutorials")
+@Autonomous(name="OpenCV Sample Freight Frenzy", group="Tutorials")
 
 public class OpenCV_Tutorial_Freight_Frenzy extends LinearOpMode {
 
