@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Test;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Enums.Barcode;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -14,14 +15,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 class SkystonePipeline extends OpenCvPipeline{
     Telemetry telemetry;
     Mat mat = new Mat(); // Mat is a matrix
+    Barcode barcode = Barcode.RIGHT; // Default target zone
 
     // These enums can go in the ENUM package if desired
-    public enum Location {
-        LEFT,
-        RIGHT,
-        NOT_FOUND
-    }
-    private Location location;
+
     // ROI is the region of interest. This is a group of pixels that will be analyzed
     // these values assume a 320 x 240 camera resolution if 640 x 480 is used the values will need
     // to be adjusted accordingly
@@ -38,11 +35,11 @@ class SkystonePipeline extends OpenCvPipeline{
     // was found is both objects in the view were yellow.
     // This logic will change from game to game
     static final Rect LEFT_ROI = new Rect(
-            new Point(60, 35),
-            new Point(120, 75));
+            new Point(20, 115),
+            new Point(80, 155));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(140, 35),
-            new Point(200, 75));
+            new Point(180, 115),
+            new Point(240, 155));
     static double PERCENT_COLOR_THRESHOLD = 0.4;
 
     // telemetry is part of a LinearOpmde. Since this pipeline does not extend a LinearOpmode
@@ -66,8 +63,8 @@ class SkystonePipeline extends OpenCvPipeline{
         // Purple   280 or 140 in Open CV
         // Pink     300 or 150 in open CV
         // Red      360 or 180 in openCV
-        Scalar lowHSV = new Scalar(23, 50, 70); // for yellow this is the "orange" side of the range
-        Scalar highHSV = new Scalar(32, 255, 255); // for yellow this is the "green" side of the range
+        Scalar lowHSV = new Scalar(69, 59,  57); // for yellow this is the "orange" side of the range
+        Scalar highHSV = new Scalar(104, 300, 179); // for yellow this is the "green" side of the range
 
         Core.inRange(mat, lowHSV, highHSV, mat);
 
@@ -90,20 +87,20 @@ class SkystonePipeline extends OpenCvPipeline{
         telemetry.addData("Left percentage", Math.round(leftValue * 100) + "%");
         telemetry.addData("Right percentage", Math.round(rightValue * 100) + "%");
 
-        boolean stoneLeft = leftValue > PERCENT_COLOR_THRESHOLD; // sets a limit to compare to so small objects don't accidentally trigger
-        boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
+        boolean stoneLeft = leftValue < PERCENT_COLOR_THRESHOLD; // sets a limit to compare to so small objects don't accidentally trigger
+        boolean stoneRight = rightValue < PERCENT_COLOR_THRESHOLD;
 
         if (stoneLeft && stoneRight) {
-            location = Location.NOT_FOUND;
-            telemetry.addData("Skystone Location", "not found");
+            barcode = Barcode.LEFT;
+            telemetry.addData("Skystone Location", "left");
         }
         else if (stoneLeft) {
-            location = Location.RIGHT;
+            barcode = Barcode.RIGHT;
             telemetry.addData("Skystone Location", "right");
         }
         else {
-            location = Location.LEFT;
-            telemetry.addData("Skystone Location", "left");
+            barcode = Barcode.CENTER;
+            telemetry.addData("Skystone Location", "middle");
         }
         telemetry.update();
 
@@ -112,15 +109,15 @@ class SkystonePipeline extends OpenCvPipeline{
         Scalar colorStone = new Scalar(255, 0, 0); // color scheme for targeting boxes drawn on the display
         Scalar colorSkystone = new Scalar(0, 255, 0);
 
-        Imgproc.rectangle(mat, LEFT_ROI, location == Location.LEFT? colorSkystone:colorStone); // the target boxes surround the ROI's
-        Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? colorSkystone:colorStone);
+        Imgproc.rectangle(mat, LEFT_ROI, barcode == Barcode.LEFT? colorSkystone:colorStone); // the target boxes surround the ROI's
+        Imgproc.rectangle(mat, RIGHT_ROI, barcode == Barcode.RIGHT? colorSkystone:colorStone);
 
         return mat;
     }
     // getter function that the main autonomous class can call. Besides telemetry, we just return stone postion because that is all the
     // auto opmode really needs.
-    public Location getLocation() {
-        return location;
+    public Barcode getLocation() {
+        return barcode;
     }
 
 }

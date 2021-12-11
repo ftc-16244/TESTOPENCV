@@ -63,7 +63,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
                 case RIGHT:
                     // ...
                     break;
-                case NOT_FOUND:
+                case CENTER:
                     // ...
             }
             phoneCam.stopStreaming();

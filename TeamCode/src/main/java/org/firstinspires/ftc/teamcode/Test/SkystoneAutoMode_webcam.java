@@ -61,7 +61,7 @@ public class SkystoneAutoMode_webcam extends LinearOpMode {
             case RIGHT:
                 // ...
                 break;
-            case NOT_FOUND:
+            case CENTER:
                 // ...
         }
         webcam.stopStreaming();
