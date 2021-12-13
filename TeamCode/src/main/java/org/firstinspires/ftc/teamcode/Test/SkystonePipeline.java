@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 // 16244 modified for webcam and ultimately for Fright Frenzy Team Shipping Element
 // see youtube video titles FTC EasyOpenCV Tutorial + Skystone Example
 
-class SkystonePipeline extends OpenCvPipeline{
+public class SkystonePipeline extends OpenCvPipeline{
     Telemetry telemetry;
     Mat mat = new Mat(); // Mat is a matrix
     Barcode barcode = Barcode.RIGHT; // Default target zone
